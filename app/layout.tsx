@@ -7,9 +7,8 @@ import { getMessages } from "next-intl/server";
 import type { Metadata } from "next";
 import "./globals.css";
 
-import Layouts from "@/common/components/layouts";
 import ThemeProviderContext from "@/common/stores/theme";
-import NextAuthProvider from "@/SessionProvider";
+
 import { METADATA } from "@/common/constants/metadata";
 import { onestSans as interSans } from "@/common/styles/fonts";
 
@@ -34,14 +33,14 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({
   children,
-  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { locale?: string };
 }>) => {
-  const locale = params?.locale || 'kr';
+  const locale = 'kr'; // Default locale
   const messages = await getMessages({ locale });
-  const session = await getServerSession();
+  
+  // Temporarily disable session for troubleshooting
+  const session = null;
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -66,11 +65,11 @@ const RootLayout = async ({
           shadow="0 0 10px #05b6d3,0 0 5px #45c6c0"
         />
         <NextIntlClientProvider messages={messages}>
-          <NextAuthProvider session={session}>
+
             <ThemeProviderContext>
-              <Layouts>{children}</Layouts>
+             {children}
             </ThemeProviderContext>
-          </NextAuthProvider>
+
         </NextIntlClientProvider>
         <Analytics />
       </body>

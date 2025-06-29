@@ -2,9 +2,9 @@
 
 import clsx from "clsx";
 import { ChangeEvent, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 
 import { Locale } from "@/config";
-import { setUserLocale } from "@/services/locale";
 
 interface LocaleSwitcherSelectProps {
   items: Array<{ value: string; label: string }>;
@@ -19,11 +19,17 @@ const LocaleSwitcherSelect = ({
 }: LocaleSwitcherSelectProps) => {
   const [isPending, startTransition] = useTransition();
   const [isShow, setIsShow] = useState(false);
+  const router = useRouter();
 
   const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const locale = event.target.value as Locale;
     startTransition(() => {
-      setUserLocale(locale);
+      // Store locale in localStorage instead of cookies
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('NEXT_LOCALE', locale);
+        // Refresh the page to apply new locale
+        window.location.reload();
+      }
     });
   };
 
