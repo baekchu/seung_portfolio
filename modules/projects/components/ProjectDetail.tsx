@@ -35,8 +35,8 @@ const ProjectDetail = ({
         </div>
         <ProjectLink
           title={title}
-          link_demo={link_demo || ""}
-          link_github={link_github || ""}
+          link_demo={link_demo}
+          link_github={link_github}
         />
       </div>
 

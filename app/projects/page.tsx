@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "Software Engineer portfolio ideas",
   keywords: "portfolio frontend developer",
   alternates: {
-    canonical: `${process.env.DOMAIN}/projects`,
+    canonical: process.env.DOMAIN ? `${process.env.DOMAIN}/projects` : undefined,
   },
 };
 

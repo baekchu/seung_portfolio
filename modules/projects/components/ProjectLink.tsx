@@ -5,8 +5,8 @@ import { FiExternalLink as LinkIcon } from "react-icons/fi";
 
 interface ProjectLinkProps {
   title?: string;
-  link_github?: string;
-  link_demo?: string;
+  link_github?: string | null;
+  link_demo?: string | null;
 }
 
 interface LinkComponentProps {
@@ -31,21 +31,34 @@ const LinkComponent = ({ url, text, icon }: LinkComponentProps) => {
 const ProjectLink = ({ title, link_github, link_demo }: ProjectLinkProps) => {
   const t = useTranslations("ProjectsPage");
 
+  const isValidUrl = (url?: string | null): boolean => {
+    if (!url || url.trim() === '') return false;
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const hasValidGithub = isValidUrl(link_github);
+  const hasValidDemo = isValidUrl(link_demo);
+
   return (
     <div className="flex gap-4">
-      {link_github ? (
+      {hasValidGithub ? (
         <LinkComponent
-          url={link_github}
+          url={link_github!}
           text={t("source_code_text")}
           icon={<GithubIcon size={22} />}
         />
       ) : null}
-      {link_github && link_demo ? (
+      {hasValidGithub && hasValidDemo ? (
         <span className="text-neutral-400 dark:text-neutral-600">|</span>
       ) : null}
-      {link_demo ? (
+      {hasValidDemo ? (
         <LinkComponent
-          url={link_demo}
+          url={link_demo!}
           text={t("live_demo_text")}
           icon={<LinkIcon size={22} />}
         />

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: `Contact ${METADATA.exTitle}`,
   description: `Contact ${METADATA.creator}`,
   alternates: {
-    canonical: `${process.env.DOMAIN}/contact`,
+    canonical: process.env.DOMAIN ? `${process.env.DOMAIN}/contact` : undefined,
   },
 };
 

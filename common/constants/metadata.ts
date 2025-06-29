@@ -4,12 +4,12 @@ export const METADATA = {
   keyword: "s.h baek",
   authors: {
     name: "S.H Baek",
-    url: process.env.DOMAIN,
+    url: process.env.DOMAIN || "https://portfolio.example.com",
   },
   openGraph: {
-    url: process.env.DOMAIN,
+    url: process.env.DOMAIN || "https://portfolio.example.com",
     siteName: "S.H Baek",
-    locale: "id-ID",
+    locale: "ko-KR",
   },
   exTitle: "| S.H Baek",
   profile: "/images/satria.jpg",

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: `Dashboard ${METADATA.exTitle}`,
   description: `My activity dashboard as software engineer`,
   alternates: {
-    canonical: `${process.env.DOMAIN}/dashboard`,
+    canonical: process.env.DOMAIN ? `${process.env.DOMAIN}/dashboard` : undefined,
   },
 };
 
