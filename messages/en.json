@@ -1,0 +1,243 @@
+{
+  "HomePage": {
+    "intro": "Hello, I'm Seung.Hak Baek",
+    "location": "Based in Namyangju, South Korea 🇰🇷",
+    "location_type": "Onsite",
+    "resume": "I am a passionate and experienced software engineer with a strong focus on frontend development. I am particularly skilled in modern web development centered around TypeScript and React, and I enjoy creating intuitive and visually polished UIs that consider user experience (UX). I value web standards and performance optimization, focusing on writing efficient and maintainable code. I actively collaborate with team members throughout the entire process from planning to design, development, and deployment, and I am confident in problem-solving and communication. With practical experience gained from various projects, I always strive to learn and grow for better results.",
+    "skills": {
+      "title": "Tech Stack",
+      "sub_title": "My main technical competencies."
+    },
+    "services": {
+      "title": "I want to work together as a developer",
+      "sub_title": "I want to become a passionate developer and contribute to the team",
+      "main_card": {
+        "title": "I want to grow together",
+        "description": "I want to learn new technologies, grow with the team, and create meaningful products.",
+        "button_text": "Contact for hire",
+        "tags": {
+          "react": "React & Next.js",
+          "typescript": "TypeScript",
+          "teamwork": "Teamwork",
+          "growth": "Growth Mindset"
+        }
+      },
+      "skills": {
+        "frontend": {
+          "title": "Frontend Development",
+          "description": "Modern web development using React, Next.js, TypeScript"
+        },
+        "performance": {
+          "title": "Performance Optimization",
+          "description": "Web performance optimization specialist for enhanced user experience"
+        }
+      },
+      "stats": {
+        "projects": "Personal Projects",
+        "teamwork": "Teamwork Oriented",
+        "learning": "Learning Passion"
+      }
+    }
+  },
+  "ProjectsData": {
+    "1": {
+      "title": "Design Sharing & Community Website",
+      "description": "A platform for designers to share their work and build community. Features portfolio uploads, likes, comments, and real-time chat for communication. Built with Firebase for real-time database and Zustand for state management to provide a smooth user experience.",
+      "content": "A comprehensive platform for designers that integrates work sharing, community, and portfolio features."
+    },
+    "2": {
+      "title": "Personal Portfolio Website",
+      "description": "A modern and responsive personal portfolio website for developers. Features dark mode, multi-language support, animation effects, and effectively showcases projects and tech stack.",
+      "content": "A portfolio website that effectively showcases developer skills and projects."
+    },
+    "3": {
+      "title": "Course Registration App UI/UX Redesign",
+      "description": "A mobile application that improves the complex UI of existing school course registration systems to be more user-friendly. Built with Flutter for cross-platform support and intuitive interface. Includes timetable visualization, search filtering, and favorites functionality.",
+      "content": "A mobile app redesign project to improve students' course registration experience."
+    },
+    "4": {
+      "title": "E-commerce Shopping Mall",
+      "description": "The first e-commerce website I developed, built with PHP and MySQL. Implemented basic shopping mall features including product management, shopping cart, order system, and member management. Also includes admin panel and payment systems (PayPal, credit cards).",
+      "content": "My first shopping mall project developed while learning the basics of e-commerce."
+    },
+    "5": {
+      "title": "Database Backup Program",
+      "description": "A desktop application responsible for automatic backup and restoration of enterprise databases. Developed with C# and .NET Framework, includes scheduling, compression, and encryption features. Supports various databases (MySQL, SQL Server, PostgreSQL).",
+      "content": "A professional tool for secure backup and restoration of enterprise data."
+    }
+  },
+  "AboutPage": {
+    "title": "About",
+    "description": "A brief story about me",
+    "resume": {
+      "paragraf_1": "Hello! Thank you for visiting my portfolio. My name is Baek Seunghak. I studied Computer Engineering at Hallym University, building solid theoretical knowledge and practical experience. I have a deep interest in frontend development and continuously explore the web development field using JavaScript, TypeScript, and various frameworks and libraries.",
+
+      "paragraf_2": "I consider creating web applications that provide accurate and convenient experiences to users as the most important thing. My main stack includes JavaScript and TypeScript along with React, Vite, and Next.js. My strength is the ability to quickly learn new technologies and apply them to projects. I adapt well to new environments and changes, and I value creating better results through smooth collaboration with the team.",
+
+      "paragraf_3": "I believe that effective communication is the key to success in any role. Based on flexible thinking and efficient problem-solving abilities, I am always growing by thinking about better directions. I feel great satisfaction in achieving goals together with the team based on analytical thinking and leadership capabilities. I look forward to opportunities to grow and contribute with a good team in the future!"
+    },
+   
+    "education": {
+      "title": "Education",
+      "sub_title": "My educational journey.",
+      "school": "Hallym University",
+      "major": "Big Data Science",
+      "logo": "/images/education/hallym.png",
+      "location": "Chuncheon, Gangwon-do 🇰🇷",
+      "degree": "Bachelor's degree",
+      "start_year": 2020,
+      "end_year": 2024,
+      "link": "https://www.hallym.ac.kr"
+    },
+    "resume_download_button": "Download Resume",
+    "portfolio_download_button": "Download Portfolio"
+  },
+  "AchievementsPage": {
+    "title": "Achievements",
+    "description": "A collection of certificates and badges that I have earned throughout my professional journey.",
+    "error": "An error occurred on the server.",
+    "no_data": "No data available.",
+    "show_credential": "Show Credentials"
+  },
+  "ProjectsPage": {
+    "title": "Projects",
+    "description": "Several projects that I have worked on, both private and open source.",
+    "view_project": "View Project",
+    "tech_stack": "Tech Stack",
+    "back_button": "Back",
+    "source_code_text": "Source Code",
+    "live_demo_text": "Live Demo",
+    "error": "An error occurred on the server.",
+    "no_data": "No data available."
+  },
+  "DashboardPage": {
+    "title": "Dashboard",
+    "description": "This is my personal dashboard, built with Next.js API routes deployed as serverless functions.",
+    "error": "An error occurred on the server.",
+    "github": {
+      "title": "Contributions",
+      "sub_title": "My contributions from last year on github.",
+      "title_total_contribution": "Total",
+      "title_total_this_week_contributino": "This week",
+      "title_best_contribution": "Best",
+      "title_average_contribution": "Average",
+      "title_less_contribution": "Less",
+      "title_more_contribution": "More",
+      "unit": "day"
+    },
+    "wakatime": {
+      "title": "Weekly Statistics",
+      "sub_title": "WakaTime statistics for the last 7 days.",
+      "last_update": "Last update",
+      "start_date": "Start Date",
+      "end_date": "End Date",
+      "daily_average": "Daily Coding Average",
+      "daily_total": "Total Coding Time This Week",
+      "best_day": "Best Day Coding Time",
+      "all_time_since_today": "All Time Since Today",
+      "languages": "Programming Languages"
+    },
+    "codewars": {
+      "title": "Codewars Statistics",
+      "sub_title": "My statistics score on Codewars.",
+      "title_rank": "Rank",
+      "title_honor": "Honor",
+      "title_completed": "Completed",
+      "title_leaderboard": "Leaderboard",
+      "title_clan": "Clan",
+      "title_skills": "Skills"
+    },
+    "monkeytype": {
+      "title": "Monkeytype Statistics",
+      "sub_title": "My statistics score on Monkeytype.",
+      "joined": "Joined",
+      "current_streak": "Current streak",
+      "unit_days": "days",
+      "title_test_started": "Tests started",
+      "title_test_completed": "Tests completed",
+      "title_time_typing": "Time typing",
+      "title_leaderboard": "All-Time English Leaderboards",
+      "unit_seconds": "Seconds",
+      "unit_time": "time",
+      "unit_words": "words",
+      "top": "top",
+      "days_ago": "days ago",
+      "xp_until_next_level": "XP until next level",
+      "total_xp": "total XP"
+    }
+  },
+  "ChatRoomPage": {
+    "title": "Chat Room",
+    "description": "Leave whatever you like to say, suggestions, questions or anything!",
+    "placeholder": "Type a message...",
+    "sign_in": {
+      "title": "Please sign in to start. Don't worry, your data is safe.",
+      "label": "Sign in with",
+      "signed_label": "Signed in as",
+      "sign_out_label": "Sign out"
+    },
+    "widget": {
+      "title": "Chat Room",
+      "tooltip_title": "Go to Chat Room",
+      "tooltip_minimize": "Minimize",
+      "tooltip_signout": "Signout"
+    }
+  },
+  "ContactPage": {
+    "title": "Contact",
+    "description": "Let`s get in touch",
+    "social_media": {
+      "title": "Find me on social media",
+      "gmail": {
+        "title": "Stay in Touch",
+        "description": "Reach out via email for any inquiries or collaborations."
+      },
+      "instagram": {
+        "title": "Follow My Journey",
+        "description": "Stay updated with my latest posts and stories on Instagram."
+      },
+      "naver": {
+        "title": "Visit My Blog",
+        "description": "Check out my latest articles and insights on Naver Blog."
+      },
+      "kakaotalk": {
+        "title": "Chat with Me",
+        "description": "Connect with me quickly and conveniently via KakaoTalk."
+      },
+      "github": {
+        "title": "Explore the Code",
+        "description": "Explore the source code for all my projects on GitHub."
+      }
+    },
+    "form": {
+      "title": "Or send me a message",
+      "input_name": "Name",
+      "input_email": "Email",
+      "input_message": "Message",
+      "button": "Send Email"
+    }
+  },
+  "Footer": {
+    "hire": "Hire me.",
+    "copyright_1": "COPYRIGHT © ",
+    "copyright_2": "Seung.Hak Baek. All rights reserved."
+  },
+  "LocaleSwitcher": {
+    "en": "🇺🇸",
+    "kr": "🇰🇷",
+    "label": "Language"
+  },
+  "Navigation": {
+    "Home": "Home",
+    "About": "About",
+    "Achievements": "Achievements",
+    "Projects": "Projects",
+    "Dashboard": "Dashboard",
+    "Chat Room": "Chat Room",
+    "Contact": "Contact"
+  },
+  "NotFoundPage": {
+    "title": "Page not found",
+    "button": "Take me home"
+  }
+}

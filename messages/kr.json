@@ -1,0 +1,243 @@
+{
+  "HomePage": {
+    "intro": "안녕하세요, 백승학입니다.",
+    "location": "대한민국 남양주시 거주",
+    "resume": "저는 프론트엔드 개발에 강점을 가진 열정적이고 경험 많은 소프트웨어 엔지니어입니다. 특히 TypeScript와 React를 중심으로 한 모던 웹 개발에 익숙하며, 사용자 경험(UX)을 고려한 직관적이고 시각적으로 완성도 높은 UI를 만드는 것을 좋아합니다. 웹 표준과 성능 최적화를 중요하게 생각하며, 효율적이고 유지보수가 용이한 코드를 작성하는 데 집중합니다. 또한 기획 단계부터 디자인, 개발, 배포까지의 전 과정을 팀원들과 적극적으로 협업하며, 문제 해결과 커뮤니케이션에 자신이 있습니다. 다양한 프로젝트 경험을 통해 쌓은 실전 감각으로, 항상 더 나은 결과물을 위해 배우고 성장하려고 노력합니다.",
+    "skills": {
+      "title": "기술 스택",
+      "sub_title": "저의 주요 기술 역량입니다."
+    },
+    "services": {
+      "title": "개발자로 함께하고 싶습니다",
+      "sub_title": "열정적인 개발자가 되어 팀에 기여하고 싶습니다",
+      "main_card": {
+        "title": "함께 성장하고 싶습니다",
+        "description": "새로운 기술을 배우고 팀과 함께 성장하며, 의미있는 프로덕트를 만들어가고 싶습니다.",
+        "button_text": "채용 문의하기",
+        "tags": {
+          "react": "React & Next.js",
+          "typescript": "TypeScript",
+          "teamwork": "팀워크",
+          "growth": "성장마인드"
+        }
+      },
+      "skills": {
+        "frontend": {
+          "title": "프론트엔드 개발",
+          "description": "React, Next.js, TypeScript를 활용한 현대적인 웹 개발"
+        },
+        "performance": {
+          "title": "성능 최적화",
+          "description": "사용자 경험 향상을 위한 웹 성능 최적화 전문"
+        }
+      },
+      "stats": {
+        "projects": "개인 프로젝트",
+        "teamwork": "팀워크 지향",
+        "learning": "학습 열정"
+      }
+    }
+  }
+,
+ "AboutPage": {
+  "title": "소개",
+  "description": "저에 대한 간단한 이야기입니다.",
+  "resume": {
+    "paragraf_1": "안녕하세요! 제 포트폴리오를 찾아와 주셔서 감사합니다. 저는 백승학이라고 합니다. 한림대학교에서 컴퓨터공학을 전공하며 탄탄한 이론과 실무 경험을 쌓았습니다. 특히 프론트엔드 개발에 깊은 관심이 있으며, JavaScript와 TypeScript를 비롯해 다양한 프레임워크와 라이브러리를 활용해 웹 개발 분야를 꾸준히 탐구하고 있습니다.",
+
+    "paragraf_2": "사용자에게 정확하고 편리한 경험을 제공하는 웹 애플리케이션을 만드는 것을 가장 중요하게 생각합니다. 주요 스택으로는 JavaScript, TypeScript와 함께 React, Vite, Next.js 등을 다루며, 최신 기술을 빠르게 습득하고 프로젝트에 적용할 수 있는 역량이 강점입니다. 새로운 환경과 변화에 잘 적응하며, 팀과의 원활한 협업을 통해 더 나은 결과물을 만들어내는 것을 중요하게 생각합니다.",
+
+    "paragraf_3": "저는 효과적인 소통이 어떤 역할에서도 성공의 핵심이라고 믿습니다. 유연한 사고와 효율적인 문제 해결 능력을 바탕으로 항상 더 나은 방향을 고민하며 성장하고 있습니다. 분석적 사고와 리더십 역량을 바탕으로 팀과 함께 목표를 달성해 나가는 과정에서 큰 보람을 느낍니다. 앞으로 좋은 팀과 함께 성장하고 기여할 수 있는 기회를 기대하고 있습니다!"
+  },
+
+  "education": {
+    "title": "학력",
+    "sub_title": "저의 학업 여정입니다.",
+    "school": "한림대학교",
+    "major": "빅데이터학과",
+    "logo": "/images/education/hallym.png",
+    "location": "강원도 춘천 🇰🇷",
+    "degree": "학사",
+    "start_year": 2020,
+    "end_year": 2024,
+    "link": "https://www.hallym.ac.kr"
+  },
+  "resume_download_button": "이력서 다운로드",
+  "portfolio_download_button": "포트폴리오 다운로드"
+},
+  "ProjectsData": {
+    "1": {
+      "title": "디자인 공유 및 커뮤니티 웹사이트",
+      "description": "디자이너들을 위한 작품 공유 및 커뮤니티 플랫폼입니다. 포트폴리오 업로드, 좋아요, 댓글 기능과 실시간 채팅을 통한 소통이 가능합니다. Firebase를 활용한 실시간 데이터베이스와 Zustand를 통한 상태 관리로 원활한 사용자 경험을 제공합니다.",
+      "content": "디자이너들을 위한 종합 플랫폼으로 작품 공유, 커뮤니티, 포트폴리오 기능을 통합한 웹사이트입니다."
+    },
+    "2": {
+      "title": "개인 포트폴리오 웹사이트",
+      "description": "개발자를 위한 현대적이고 반응형인 개인 포트폴리오 웹사이트입니다. 다크모드, 다국어 지원, 애니메이션 효과가 적용되어 있으며, 프로젝트 쇼케이스와 기술 스택을 효과적으로 보여줍니다.",
+      "content": "개발자의 역량과 프로젝트를 효과적으로 보여주는 포트폴리오 웹사이트입니다."
+    },
+    "3": {
+      "title": "학교 수강신청 앱 UI/UX 리디자인",
+      "description": "기존 학교 수강신청 시스템의 복잡한 UI를 사용자 친화적으로 개선한 모바일 애플리케이션입니다. Flutter를 사용하여 크로스 플랫폼 지원과 직관적인 인터페이스를 구현했습니다. 시간표 시각화, 검색 필터링, 즐겨찾기 기능 등을 포함합니다.",
+      "content": "학생들의 수강신청 경험을 개선하기 위한 모바일 앱 리디자인 프로젝트입니다."
+    },
+    "4": {
+      "title": "이커머스 쇼핑몰",
+      "description": "처음으로 개발한 전자상거래 웹사이트로, PHP와 MySQL을 활용하여 구축했습니다. 상품 관리, 장바구니, 주문 시스템, 회원 관리 등 쇼핑몰의 기본 기능들을 구현했습니다. 관리자 패널과 결제 시스템(PayPal, 신용카드)도 포함되어 있습니다.",
+      "content": "전자상거래의 기본 개념을 학습하며 개발한 첫 번째 쇼핑몰 프로젝트입니다."
+    },
+    "5": {
+      "title": "데이터베이스 백업 프로그램",
+      "description": "기업용 데이터베이스의 자동 백업 및 복원을 담당하는 데스크톱 애플리케이션입니다. C#과 .NET Framework를 사용하여 개발했으며, 스케줄링, 압축, 암호화 기능을 포함합니다. 다양한 데이터베이스(MySQL, SQL Server, PostgreSQL)를 지원합니다.",
+      "content": "기업 데이터의 안전한 백업과 복원을 위한 전문 도구입니다."
+    }
+  },
+  "AchievementsPage": {
+    "title": "성과",
+    "description": "제가 전문적인 여정에서 얻은 인증서와 배지 모음입니다.",
+    "error": "서버에서 오류가 발생했습니다.",
+    "no_data": "사용할 수 있는 데이터가 없습니다.",
+    "show_credential": "자격 증명 보기"
+  },
+  "ProjectsPage": {
+    "title": "프로젝트",
+    "description": "개인 및 오픈소스 프로젝트들을 소개합니다.",
+    "view_project": "프로젝트 보기",
+    "tech_stack": "기술 스택",
+    "back_button": "뒤로가기",
+    "source_code_text": "깃허브 링크",
+    "live_demo_text": "사이트 링크",
+    "error": "서버에서 오류가 발생했습니다.",
+    "no_data": "표시할 데이터가 없습니다"
+},
+  "DashboardPage": {
+    "title": "대시보드",
+    "description": "서버리스 함수로 배포된 Next.js API 라우트로 구축된 개인 대시보드입니다.",
+    "error": "서버에서 오류가 발생했습니다.",
+    "github": {
+      "title": "기여도",
+      "sub_title": "작년부터 GitHub에서의 기여도입니다.",
+      "title_total_contribution": "총합",
+      "title_total_this_week_contributino": "이번 주",
+      "title_best_contribution": "최고",
+      "title_average_contribution": "평균",
+      "title_less_contribution": "적음",
+      "title_more_contribution": "많음",
+      "unit": "일"
+    },
+    "wakatime": {
+      "title": "주간 통계",
+      "sub_title": "최근 7일간 WakaTime 통계입니다.",
+      "last_update": "마지막 업데이트",
+      "start_date": "시작 날짜",
+      "end_date": "종료 날짜",
+      "daily_average": "일일 코딩 평균",
+      "daily_total": "이번 주 총 코딩 시간",
+      "best_day": "최고 코딩 시간",
+      "all_time_since_today": "오늘까지 총 시간",
+      "languages": "프로그래밍 언어"
+    },
+    "codewars": {
+      "title": "Codewars 통계",
+      "sub_title": "Codewars에서의 통계 점수입니다.",
+      "title_rank": "랭크",
+      "title_honor": "명예",
+      "title_completed": "완료",
+      "title_leaderboard": "리더보드",
+      "title_clan": "클랜",
+      "title_skills": "기술"
+    },
+    "monkeytype": {
+      "title": "Monkeytype 통계",
+      "sub_title": "Monkeytype에서의 통계 점수입니다.",
+      "joined": "가입일",
+      "current_streak": "현재 연속 기록",
+      "unit_days": "일",
+      "title_test_started": "시작한 테스트",
+      "title_test_completed": "완료한 테스트",
+      "title_time_typing": "타이핑 시간",
+      "title_leaderboard": "영어 종합 리더보드",
+      "unit_seconds": "초",
+      "unit_time": "시간",
+      "unit_words": "단어",
+      "top": "상위",
+      "days_ago": "일 전",
+      "xp_until_next_level": "다음 레벨까지 필요한 XP",
+      "total_xp": "총 XP"
+    }
+  },
+  "ChatRoomPage": {
+    "title": "채팅방",
+    "description": "하고 싶은 말, 제안, 질문 등 무엇이든 남겨주세요!",
+    "placeholder": "메시지를 입력하세요...",
+    "sign_in": {
+      "title": "시작하려면 로그인해 주세요. 걱정하지 마세요, 데이터는 안전합니다.",
+      "label": "로그인",
+      "signed_label": "로그인됨",
+      "sign_out_label": "로그아웃"
+    },
+    "widget": {
+      "title": "채팅방",
+      "tooltip_title": "채팅방으로 이동",
+      "tooltip_minimize": "최소화",
+      "tooltip_signout": "로그아웃"
+    }
+  },
+  "ContactPage": {
+    "title": "연락처",
+    "description": "언제든지 연락해주세요",
+    "social_media": {
+      "title": "소셜 미디어에서 만나요",
+      "gmail": {
+        "title": "연락하기",
+        "description": "문의사항이나 협업 제안은 이메일로 연락해주세요."
+      },
+      "instagram": {
+        "title": "일상 공유",
+        "description": "인스타그램에서 최신 소식과 일상을 확인하세요."
+      },
+      "naver": {
+        "title": "블로그 방문",
+        "description": "네이버 블로그에서 더 많은 정보와 소식을 확인하세요."
+      },
+      "kakaotalk": {
+        "title": "카카오톡 문의",
+        "description": "카카오톡을 통해 빠르고 편리하게 소통해요."
+      },
+      "github": {
+        "title": "코드 탐색",
+        "description": "깃허브에서 모든 프로젝트의 소스 코드를 확인하세요."
+      }
+    },
+    "form": {
+      "title": "또는 직접 메시지를 보내주세요",
+      "input_name": "이름",
+      "input_email": "이메일",
+      "input_message": "메시지",
+      "button": "이메일 보내기"
+    }
+  },
+  "Footer": {
+    "hire": "채용하기",
+    "copyright_1": "저작권 © ",
+    "copyright_2": "백승학. 모든 권리 보유."
+  },
+  "LocaleSwitcher": {
+    "en": "🇺🇸",
+    "kr": "🇰🇷",
+    "label": "언어"
+  },
+  "Navigation": {
+    "Home": "홈",
+    "About": "소개",
+    "Achievements": "성과",
+    "Projects": "프로젝트",
+    "Dashboard": "대시보드",
+    "Chat Room": "채팅방",
+    "Contact": "연락처"
+  },
+  "NotFoundPage": {
+    "title": "페이지를 찾을 수 없습니다",
+    "button": "홈으로 돌아가기"
+  }
+}
