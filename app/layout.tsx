@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : process.env.DOMAIN || "https://seung-portfolio-gzw3.vercel.app",
+      : process.env.DOMAIN || "https://seung-portfolio.vercel.app",
   ),
   title: METADATA.creator,
   description: METADATA.description,
@@ -25,11 +25,11 @@ export const metadata: Metadata = {
   creator: METADATA.creator,
   authors: {
     name: METADATA.creator,
-    url: process.env.DOMAIN || "https://seung-portfolio-gzw3.vercel.app",
+    url: process.env.DOMAIN || "https://seung-portfolio.vercel.app",
   },
   openGraph: {
     images: METADATA.profile,
-    url: process.env.DOMAIN || "https://seung-portfolio-gzw3.vercel.app",
+    url: process.env.DOMAIN || "https://seung-portfolio.vercel.app",
     siteName: METADATA.openGraph.siteName,
     locale: METADATA.openGraph.locale,
     type: "website",

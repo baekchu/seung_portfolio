@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : process.env.DOMAIN || "https://seung-portfolio-gzw3.vercel.app",
+      : process.env.DOMAIN || "https://seung-portfolio.vercel.app",
   },
 };
 

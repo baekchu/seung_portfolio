@@ -2,7 +2,7 @@ const getBaseUrl = () => {
   if (typeof window !== 'undefined') return '';
   return process.env.NODE_ENV === "development"
     ? "http://localhost:3000"
-    : process.env.DOMAIN || "https://seung-portfolio-gzw3.vercel.app";
+    : process.env.DOMAIN || "https://seung-portfolio.vercel.app";
 };
 
 export const METADATA = {
