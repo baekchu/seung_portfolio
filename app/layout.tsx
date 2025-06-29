@@ -7,6 +7,7 @@ import { getMessages } from "next-intl/server";
 import type { Metadata } from "next";
 import "./globals.css";
 
+import Layouts from "@/common/components/layouts";
 import ThemeProviderContext from "@/common/stores/theme";
 
 import { METADATA } from "@/common/constants/metadata";
@@ -67,7 +68,7 @@ const RootLayout = async ({
         <NextIntlClientProvider messages={messages}>
 
             <ThemeProviderContext>
-             {children}
+              <Layouts>{children}</Layouts>
             </ThemeProviderContext>
 
         </NextIntlClientProvider>
