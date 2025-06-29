@@ -1,20 +1,13 @@
-const getBaseUrl = () => {
-  if (typeof window !== 'undefined') return '';
-  return process.env.NODE_ENV === "development"
-    ? "http://localhost:3000"
-    : process.env.DOMAIN || "https://seung-portfolio.vercel.app";
-};
-
 export const METADATA = {
   creator: "S.H Baek",
   description: "portfolio",
   keyword: "s.h baek",
   authors: {
     name: "S.H Baek",
-    url: getBaseUrl(),
+    url: "https://seung-portfolio.vercel.app",
   },
   openGraph: {
-    url: getBaseUrl(),
+    url: "https://seung-portfolio.vercel.app",
     siteName: "S.H Baek",
     locale: "ko-KR",
   },

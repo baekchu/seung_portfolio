@@ -11,25 +11,21 @@ import Layouts from "@/common/components/layouts";
 import ThemeProviderContext from "@/common/stores/theme";
 import NextAuthProvider from "@/SessionProvider";
 import { METADATA } from "@/common/constants/metadata";
-import { onestSans } from "@/common/styles/fonts";
+import { onestSans as interSans } from "@/common/styles/fonts";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : process.env.DOMAIN || "https://seung-portfolio.vercel.app",
-  ),
+  metadataBase: new URL("https://seung-portfolio.vercel.app"),
   title: METADATA.creator,
   description: METADATA.description,
   keywords: METADATA.keyword,
   creator: METADATA.creator,
   authors: {
     name: METADATA.creator,
-    url: process.env.DOMAIN || "https://seung-portfolio.vercel.app",
+    url: "https://seung-portfolio.vercel.app",
   },
   openGraph: {
     images: METADATA.profile,
-    url: process.env.DOMAIN || "https://seung-portfolio.vercel.app",
+    url: "https://seung-portfolio.vercel.app",
     siteName: METADATA.openGraph.siteName,
     locale: METADATA.openGraph.locale,
     type: "website",
@@ -57,7 +53,7 @@ const RootLayout = async ({
         src="https://cloud.umami.is/script.js"
         data-website-id="8e2c9f27-a12b-48ca-8130-808ebe377aca"
       ></Script>
-      <body className={onestSans.className}>
+      <body className={interSans.className}>
         <NextTopLoader
           color="#05b6d3"
           initialPosition={0.08}
