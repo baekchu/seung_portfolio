@@ -1,3 +1,5 @@
+"use client";
+
 import { BiCodeAlt as SkillsIcon } from "react-icons/bi";
 import { useTranslations } from "next-intl";
 

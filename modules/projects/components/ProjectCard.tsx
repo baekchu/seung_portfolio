@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "@/common/components/elements/Image";
 import { HiOutlineArrowSmRight as ViewIcon, HiStar } from "react-icons/hi";

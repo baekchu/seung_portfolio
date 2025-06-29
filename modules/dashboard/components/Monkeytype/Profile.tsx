@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { differenceInDays, format } from "date-fns";
 import { motion, Variants } from "framer-motion";

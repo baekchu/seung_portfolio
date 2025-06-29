@@ -17,18 +17,19 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : process.env.DOMAIN || "https://portfolio.example.com",
+      : process.env.DOMAIN || "https://seung-portfolio-gzw3.vercel.app",
   ),
+  title: METADATA.creator,
   description: METADATA.description,
   keywords: METADATA.keyword,
   creator: METADATA.creator,
   authors: {
     name: METADATA.creator,
-    url: METADATA.openGraph.url,
+    url: process.env.DOMAIN || "https://seung-portfolio-gzw3.vercel.app",
   },
   openGraph: {
     images: METADATA.profile,
-    url: METADATA.openGraph.url,
+    url: process.env.DOMAIN || "https://seung-portfolio-gzw3.vercel.app",
     siteName: METADATA.openGraph.siteName,
     locale: METADATA.openGraph.locale,
     type: "website",
@@ -37,16 +38,20 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({
   children,
-  params: { locale },
+  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { locale: string };
+  params: { locale?: string };
 }>) => {
-  const messages = await getMessages();
+  const locale = params?.locale || 'kr';
+  const messages = await getMessages({ locale });
   const session = await getServerSession();
 
   return (
-    <html lang={locale} suppressHydrationWarning={true}>
+    <html lang={locale} suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <Script
         defer
         src="https://cloud.umami.is/script.js"
