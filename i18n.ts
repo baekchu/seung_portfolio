@@ -1,7 +1,10 @@
 import {getRequestConfig} from 'next-intl/server';
+import { cookies } from 'next/headers';
 
 export default getRequestConfig(async () => {
-  const locale = 'kr'; // default locale for static generation
+  const cookieStore = cookies();
+  const savedLocale = cookieStore.get('NEXT_LOCALE')?.value;
+  const locale = (savedLocale === 'en' || savedLocale === 'kr') ? savedLocale : 'kr';
 
   try {
     const messages = (await import(`./messages/${locale}.json`)).default;
@@ -11,10 +14,10 @@ export default getRequestConfig(async () => {
     };
   } catch (error) {
     console.error(`Failed to load messages for locale: ${locale}`, error);
-    // Fallback to empty messages
+    const messages = (await import('./messages/kr.json')).default;
     return {
       locale: 'kr',
-      messages: {}
+      messages
     };
   }
 });

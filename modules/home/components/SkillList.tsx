@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { BiCodeAlt as SkillsIcon } from "react-icons/bi";
 import { useTranslations } from "next-intl";
 
@@ -10,12 +11,27 @@ import SectionSubHeading from "@/common/components/elements/SectionSubHeading";
 import { STACKS } from "@/common/constants/stacks";
 import MarqueeElement from "@/common/components/elements/MarqueeElement";
 
+const shuffleArray = <T,>(arr: T[]): T[] => {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
+
 const SkillList = () => {
   const t = useTranslations("HomePage");
 
-  const stacksInArray: Array<[string, JSX.Element]> = Object.entries(
-    STACKS,
-  ).sort(() => Math.random() - 0.5);
+  const stacksInArray: Array<[string, JSX.Element]> = useMemo(
+    () => shuffleArray(Object.entries(STACKS)),
+    [],
+  );
+
+  const rows = useMemo(
+    () => [shuffleArray(stacksInArray), shuffleArray(stacksInArray)],
+    [stacksInArray],
+  );
 
   return (
     <section className="space-y-6">
@@ -27,19 +43,16 @@ const SkillList = () => {
       </div>
 
       <div className="flex flex-col space-y-1 overflow-x-hidden">
-        {Array.from({ length: 2 }, (_, index) => {
-          const slider = [...stacksInArray].sort(() => Math.random() - 0.5);
-          return (
-            <MarqueeElement
-              key={index}
-              direction={index % 2 === 0 ? "left" : "right"}
-            >
-              {slider.map(([name, icon], index) => (
-                <SkillCard key={index} name={name} icon={icon} />
-              ))}
-            </MarqueeElement>
-          );
-        })}
+        {rows.map((slider, index) => (
+          <MarqueeElement
+            key={index}
+            direction={index % 2 === 0 ? "left" : "right"}
+          >
+            {slider.map(([name, icon], i) => (
+              <SkillCard key={i} name={name} icon={icon} />
+            ))}
+          </MarqueeElement>
+        ))}
       </div>
     </section>
   );

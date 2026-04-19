@@ -24,12 +24,9 @@ const LocaleSwitcherSelect = ({
   const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const locale = event.target.value as Locale;
     startTransition(() => {
-      // Store locale in localStorage instead of cookies
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('NEXT_LOCALE', locale);
-        // Refresh the page to apply new locale
-        window.location.reload();
-      }
+      // Set cookie so server-side rendering picks up the locale
+      document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000; SameSite=Lax`;
+      window.location.reload();
     });
   };
 

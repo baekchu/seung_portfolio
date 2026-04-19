@@ -1,7 +1,7 @@
 export const ABOUT = [
-    "Hello there! Thank you for visiting my personal website. I'm Satria Bahari, a student majoring in Information Systems at the University of Jambi. I have a strong interest in frontend development. With a solid foundation in JavaScript and TypeScript, as well as a comprehensive understanding of various frontend libraries and frameworks, I have navigated the ever-evolving landscape of web development with enthusiasm and dedication.",
+    "안녕하세요! 제 포트폴리오를 찾아와 주셔서 감사합니다. 저는 백승학이라고 합니다. 한림대학교에서 컴퓨터공학을 전공하며 컴퓨터 과학과 시스템에 대한 탄탄한 기초를 쌓았습니다. 웹 보안과 모의해킹에 깊은 열정을 가지고 있으며, 사이버보안 분야에서의 커리어를 목표로 적극적으로 성장하고 있습니다.",
 
-    "I focus on creating web applications that not only provide precise experiences but are also user-friendly. My specialization includes JavaScript and TypeScript, along with frameworks such as React, Vite, and Next.js. As a quick learner and adaptive thinker, I thrive in a dynamic environment where innovation is a driving force. My collaborative nature allows me to seamlessly integrate with teams, contributing not only to my technical skills but also embodying a humble attitude that values input from every team member.",
-    
-    "I strongly believe that effective communication is crucial for success in any role. I am adaptable, think efficiently, and always strive for the best. My experiences have equipped me with analytical skills and strong leadership abilities. I am comfortable working collaboratively in a team and am excited about the opportunity to contribute to team success. Looking forward to the possibility of collaboration!"
+    "네트워크 보안, 취약점 분석, 서버 인프라 구축 등을 중점적으로 공부하고 있습니다. Kali Linux, Ubuntu, Rocky Linux 환경에 능숙하며, Wireshark, Nmap, Metasploit 등의 도구를 활용하여 네트워크 분석과 보안 점검을 수행합니다. MariaDB, MySQL 데이터베이스 관리 및 서버 관리 경험도 보유하고 있습니다.",
+
+    "지속적으로 진화하는 보안 환경에서 호기심과 끊임없는 학습이 무엇보다 중요하다고 생각합니다. 책임감 있는 보안 원칙에 헌신하고 있습니다. 보안 팀 기여, 인프라 보안 강화, 정보보안 분야의 전문가로 성장하는 기회를 기대하고 있습니다!"
 ]

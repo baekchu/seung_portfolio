@@ -1,9 +1,9 @@
 import NextTopLoader from "nextjs-toploader";
 import Script from "next/script";
-import { getServerSession } from "next-auth";
 import { Analytics } from "@vercel/analytics/react";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -37,7 +37,9 @@ const RootLayout = async ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const locale = 'kr'; // Default locale
+  const cookieStore = cookies();
+  const savedLocale = cookieStore.get('NEXT_LOCALE')?.value;
+  const locale = (savedLocale === 'en' || savedLocale === 'kr') ? savedLocale : 'kr';
   const messages = await getMessages({ locale });
   
   // Temporarily disable session for troubleshooting

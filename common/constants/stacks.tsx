@@ -19,7 +19,6 @@ import {
   SiReacthookform,
   SiReacttable,
   SiMongodb,
-  SiBun,
   SiYarn,
   SiNestjs,
   SiSupabase,
@@ -29,9 +28,25 @@ import {
   SiCsharp,
   SiPhp,
   SiMysql,
+  SiKalilinux,
+  SiUbuntu,
+  SiLinux,
+  SiMariadb,
+  SiPython,
+  SiWireshark,
+  SiVirtualbox,
 } from "react-icons/si";
 import { RiBearSmileFill } from "react-icons/ri";
 import { DiMsqlServer } from "react-icons/di";
+import {
+  FaNetworkWired,
+  FaShieldAlt,
+  FaDatabase,
+  FaServer,
+  FaTerminal,
+  FaBug,
+} from "react-icons/fa";
+
 export type SkillProps = {
   [key: string]: JSX.Element;
 };
@@ -39,6 +54,7 @@ export type SkillProps = {
 const iconSize = 22;
 
 export const STACKS: SkillProps = {
+  // ── Frontend ──
   HTML: <SiHtml5 size={iconSize} className="text-orange-500" />,
   CSS: <SiCss3 size={iconSize} className="text-blue-500" />,
   Bootstrap: (
@@ -80,4 +96,21 @@ export const STACKS: SkillProps = {
   Npm: <FaNpm size={iconSize} className="text-red-500" />,
   Yarn: <SiYarn size={iconSize} className="text-sky-400" />,
   Github: <SiGithub size={iconSize} />,
+  // ── Security ──
+  "Kali Linux": <SiKalilinux size={iconSize} className="text-blue-400" />,
+  Ubuntu: <SiUbuntu size={iconSize} className="text-orange-500" />,
+  "Rocky Linux": <SiLinux size={iconSize} className="text-green-600" />,
+  MariaDB: <SiMariadb size={iconSize} className="text-amber-600" />,
+  "Network Operations": (
+    <FaNetworkWired size={iconSize} className="text-cyan-500" />
+  ),
+  Python: <SiPython size={iconSize} className="text-yellow-400" />,
+  Wireshark: <SiWireshark size={iconSize} className="text-blue-500" />,
+  Metasploit: <FaShieldAlt size={iconSize} className="text-red-500" />,
+  Nmap: <FaTerminal size={iconSize} className="text-green-400" />,
+  "Vulnerability Analysis": <FaBug size={iconSize} className="text-rose-500" />,
+  "Web Hacking": <FaShieldAlt size={iconSize} className="text-purple-500" />,
+  VirtualBox: <SiVirtualbox size={iconSize} className="text-blue-600" />,
+  "SQL Injection": <FaDatabase size={iconSize} className="text-red-600" />,
+  "Server Admin": <FaServer size={iconSize} className="text-slate-500" />,
 };

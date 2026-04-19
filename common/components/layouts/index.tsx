@@ -21,8 +21,9 @@ const Layouts = ({ children }: LayoutsProps) => {
 
   useEffect(() => {
     AOS.init({
-      duration: 800,
-      delay: 50,
+      duration: 400,
+      delay: 0,
+      once: true,
     });
   }, []);
   return (
