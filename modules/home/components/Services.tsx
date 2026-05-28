@@ -147,7 +147,7 @@ const Services = () => {
             <FaSearch size={24} className="text-white" />
           </div>
           <div className="text-3xl font-bold bg-gradient-to-r from-red-600 to-rose-600 bg-clip-text text-transparent mb-1">
-            5+
+          7+
           </div>
           <div className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
             {t("stats.projects")}

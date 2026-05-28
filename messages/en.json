@@ -10,13 +10,13 @@
     },
     "services": {
       "title": "I want to work in Security",
-      "sub_title": "Aspiring web penetration tester passionate about finding vulnerabilities",
+      "sub_title": "Aspiring systems engineer passionate about infrastructure and security",
       "main_card": {
         "title": "Dedicated to Web Security",
         "description": "I want to grow as a security engineer through hands-on infrastructure and security projects, and help organizations stay secure.",
         "button_text": "Contact for hire",
         "tags": {
-          "pentest": "Web Pentesting",
+          "pentest": "Systems Engineering",
           "linux": "Linux (Kali/Ubuntu/Rocky)",
           "network": "Network Security",
           "growth": "Growth Mindset"
@@ -24,8 +24,8 @@
       },
       "skills": {
         "pentest": {
-          "title": "Web Penetration Testing",
-          "description": "Network vulnerability scanning and security analysis using Nmap, Metasploit, and Wireshark"
+          "title": "Systems Engineering",
+          "description": "Hybrid cloud infrastructure design and operations using KVM, Hyper-V, Docker, Kubernetes, and AWS"
         },
         "network": {
           "title": "Network & System Security",
@@ -46,26 +46,31 @@
       "content": ""
     },
     "2": {
+      "title": "Virtualization-Based VM Academy Infrastructure & Security",
+      "description": "Designed and deployed a multi-site hybrid cloud infrastructure connecting four locations (Seoul HQ, Yeongdeungpo, Incheon, Gyeonggi) via VPN using KVM, Hyper-V, VMware (ESXi), Docker, Kubernetes, and AWS. Integrated on-premises virtualization with AWS multi-VPC architecture, configuring AD/DNS/DHCP, HAProxy load balancing, and Auto Scaling per site.",
+      "content": ""
+    },
+    "3": {
       "title": "Design Sharing & Community Website",
       "description": "A platform for designers to share their work and build community. Features portfolio uploads, likes, comments, and real-time chat for communication. Built with Firebase for real-time database and Zustand for state management to provide a smooth user experience.",
       "content": "A comprehensive platform for designers that integrates work sharing, community, and portfolio features."
     },
-    "3": {
+    "4": {
       "title": "Personal Portfolio Website",
       "description": "A modern and responsive personal portfolio website for developers. Features dark mode, multi-language support, animation effects, and effectively showcases projects and tech stack.",
       "content": "A portfolio website that effectively showcases developer skills and projects."
     },
-    "4": {
+    "5": {
       "title": "Course Registration App UI/UX Redesign",
       "description": "A mobile application that improves the complex UI of existing school course registration systems to be more user-friendly. Built with Flutter for cross-platform support and intuitive interface. Includes timetable visualization, search filtering, and favorites functionality.",
       "content": "A mobile app redesign project to improve students' course registration experience."
     },
-    "5": {
+    "6": {
       "title": "E-commerce Shopping Mall",
       "description": "The first e-commerce website I developed, built with PHP and MySQL. Implemented basic shopping mall features including product management, shopping cart, order system, and member management. Also includes admin panel and payment systems (PayPal, credit cards).",
       "content": "My first shopping mall project developed while learning the basics of e-commerce."
     },
-    "6": {
+    "7": {
       "title": "Database Backup Program",
       "description": "A desktop application responsible for automatic backup and restoration of enterprise databases. Developed with C# and .NET Framework, includes scheduling, compression, and encryption features. Supports various databases (MySQL, SQL Server, PostgreSQL).",
       "content": "A professional tool for secure backup and restoration of enterprise data."

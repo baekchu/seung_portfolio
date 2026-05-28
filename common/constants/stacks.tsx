@@ -35,6 +35,8 @@ import {
   SiPython,
   SiWireshark,
   SiVirtualbox,
+  SiKubernetes,
+  SiAmazonaws,
 } from "react-icons/si";
 import { RiBearSmileFill } from "react-icons/ri";
 import { DiMsqlServer } from "react-icons/di";
@@ -93,6 +95,9 @@ export const STACKS: SkillProps = {
   Firebase: <SiFirebase size={iconSize} className="text-yellow-500" />,
   Supabase: <SiSupabase size={iconSize} className="text-emerald-500" />,
   Docker: <SiDocker size={iconSize} className="text-blue-500" />,
+  Kubernetes: <SiKubernetes size={iconSize} className="text-blue-600" />,
+  AWS: <SiAmazonaws size={iconSize} className="text-orange-400" />,
+  "Amazon Linux": <SiLinux size={iconSize} className="text-orange-500" />,
   Npm: <FaNpm size={iconSize} className="text-red-500" />,
   Yarn: <SiYarn size={iconSize} className="text-sky-400" />,
   Github: <SiGithub size={iconSize} />,
