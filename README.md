@@ -1,130 +1,85 @@
-  <h1>satriabahari.site</h1>
-  <p>🔥 Personal website was built originally from scratch using Next.js, TypeScript, Tailwind CSS, SWR, and Prisma</p>
+  <h1>seung-portfolio</h1>
+  <p>🔐 Personal portfolio website built with Next.js, TypeScript, Tailwind CSS, and Firebase — focused on cybersecurity & infrastructure</p>
 
-[![GitHub Repo stars](https://img.shields.io/github/stars/satriabahari/satria.com)](https://github.com/satriabahari/satria.com/stargazers)
-[![Depfu](https://badges.depfu.com/badges/02483ebb21fdb2182a66a28b68d1b7b0/status.svg)](https://depfu.com)
-[![Depfu](https://badges.depfu.com/badges/02483ebb21fdb2182a66a28b68d1b7b0/overview.svg)](https://depfu.com/github/satriabahari/satria.com?project_id=38809)
-[![Depfu](https://badges.depfu.com/badges/02483ebb21fdb2182a66a28b68d1b7b0/count.svg)](https://depfu.com/github/satriabahari/satria.com?project_id=38809)
-[![Last Update](https://img.shields.io/badge/deps%20update-every%20sunday-blue.svg)](https://shields.io/)
+[![GitHub Repo stars](https://img.shields.io/github/stars/baekchu/seung_portfolio)](https://github.com/baekchu/seung_portfolio/stargazers)
+[![Last Update](https://img.shields.io/badge/deps%20update-periodic-blue.svg)](https://shields.io/)
 
 </div>
 <br />
 
-<img width="1359" alt="image" src="https://github.com/satriabahari/satria.com/assets/121304362/aefc17bd-5174-44ab-a1a2-61b66b3e3f66">
-
-
-
-
 ## Introduction
 
-This website was carefully crafted from the ground using Next.js and other helpful tools, starting in Feb 2024.
+안녕하세요, 백승학입니다.
 
-I'm constantly making improvements to add more features and content. This website is where I share what I've learned and offer insights to others.
+한림대학교 컴퓨터공학과 출신으로, 웹 보안과 모의해킹에 깊은 열정을 가지고 있으며 사이버보안 분야에서의 커리어를 목표로 성장하고 있습니다.
 
-Feel free to use this website as a reference, for inspiration, or as a template, following the provided license. You can access the source code to customize it to your needs.
+네트워크 보안, 취약점 분석, 서버 인프라 구축 등을 중점적으로 공부하고 있으며, Kali Linux / Ubuntu / Rocky Linux 환경에서 Wireshark, Nmap, Metasploit 등의 도구를 활용한 보안 점검 경험을 보유하고 있습니다.
 
-If you find this website helpful, please consider leaving a rating. 😎👍🏻
+이 포트폴리오는 제가 진행한 프로젝트, 학습 통계, 그리고 저에 대한 정보를 한곳에서 확인할 수 있도록 직접 제작한 웹사이트입니다.
 
-If you have any questions, suggestions, or anything else, don't hesitate to reach out to me! 🧑‍💻
+궁금한 점이 있으시면 언제든지 연락해 주세요! 🧑‍💻
+
+🌐 **Live:** [seung-portfolio.vercel.app](https://seung-portfolio.vercel.app)
 <br /><br />
 
 ## Tech Stack
 
 This website is built using these technologies:
 
-- ◼️ Next.js 
+- ◼️ Next.js 14
 - ⚛️ React
 - 🔰 TypeScript
 - 💠 Tailwind CSS 3
-- 🗂 Prisma Client
+- 🔥 Firebase (Firestore)
+- 🗄️ Supabase
 - 🦫 Zustand
 - 〰️ SWR
 - ➰ Framer Motion
 - 💢 React Icons
-- 🌐 Next-Intl
+- 🌐 Next-Intl (한국어 / English)
 - 🧿 Absolute Import and Path Alias
 - 📏 ESLint
 - ✨ Prettier
-- 📌 Conventional Commit Lint
 
 <br />
 
 ## Features
 
-On this website there are several features that will continue to be updated and added in the future.
-
-- ### 🕗 Wakatime Statistics
-
-Data is retrieved using the Wakatime API and then displayed on the dashboard, built with Next.js API routes deployed as serverless functions.
-
 - ### 🗳 Projects
 
-The data projects on this blog are taken from the PostgreSQL database connected through the Prisma Client. The database for this application is hosted on Supabase DB.The data fetching method used to retrieve data projects is Incremental Static Regeneration (ISR) with 1 second revalidation and Server-Side Rendering (SSR) for the project details..
-<br /><br />
-
-- ### 🌍 International Language
-
-This website supports multiple languages, enabling users from different regions to interact with it in their preferred language. The translation is managed using i18n, making it easy to add new languages as needed.
+  프로젝트 데이터는 Supabase DB와 연동되어 관리되며, Firebase Firestore를 통해 실시간으로 조회됩니다.
 
 - ### 📊 Dashboard
 
-The dashboard page contains various statistics, including contributions from platforms like GitHub, Wakatime, Codewars, and Monkeytype. These statistics are fetched using their respective APIs and displayed in an interactive and user-friendly manner.
+  GitHub, Wakatime, Codewars, Monkeytype 등 다양한 플랫폼의 통계를 각 API를 통해 불러와 대시보드에 표시합니다.
 
-## Performance
+- ### 🌍 다국어 지원
 
-- ### PageSpeed Insights
+  next-intl을 사용하여 한국어와 영어를 지원합니다.
 
-Report URL: https://pagespeed.web.dev/analysis/https-satriav2-vercel-app/yjcgcx7o2a?form_factor=desktop
+- ### 📬 Contact
 
-![image](https://github.com/satriabahari/satria.com/assets/121304362/22628b99-fd71-4aff-b8d8-f744fef6e06c)
+  Nodemailer를 통한 이메일 문의 기능을 제공합니다.
 
-- ### GTmetrix
-
-Report URL: https://gtmetrix.com/reports/satriav2.vercel.app/cRqM4gpB/
-
-![image](https://github.com/satriabahari/satria.com/assets/121304362/872797d0-e027-4972-ae93-0343c607140d)
 <br /><br />
 
 ## Getting Started
 
-If you are interested in running this project on your local machine, you can do so in just 3 easy steps below. Additionally, remember to update the ".env.example" file to ".env" and replace the variables with your own in the ".env" file.
+로컬 환경에서 실행하려면 아래 단계를 따르세요. `.env.example`을 `.env`로 복사한 뒤 각 값을 채워주세요.
 
-### 1. Clone this template using one of the three ways:
+### 1. Clone
 
-1. Clone using git
-
-   ```bash
-   git clone https://github.com/satriabahari/satriabahari.site
-   ```
-
-2. Using `create-next-app`
-
-   ```bash
-   npx create-next-app -e https://github.com/satriabahari/satriabahari.site project-name
-   ```
-
-3. Using `degit`
-
-   ```bash
-   npx degit satriabahari/satriabahari.site YOUR_APP_NAME
-   ```
-
-4. Deploy to Vercel or Netlify, etc
-
-   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/aulianza/aulianza.id)
-   [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/aulianza/aulianza.id)
+```bash
+git clone https://github.com/baekchu/seung_portfolio
+```
 
 ### 2. Install dependencies
-
-It is encouraged to use **yarn** so the husky hooks can work properly.
 
 ```bash
 bun install
 ```
 
 ### 3. Config .env
-
-This repository uses several environment variables. Please copy .env.example into .env, then fill in the values with your own. For third-party environment variables such as Spotify, Wakatime, Firebase, and others, please refer to the official documentation provided by each provider.
 
 ```
 NODEMAILER_PW=
@@ -151,11 +106,9 @@ POSTGRES_DATABASE=
 
 ### 4. Run the development server
 
-You can start the server using this command:
-
 ```bash
 bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. You can start editing the page by modifying `src/pages/index.tsx`.
+[http://localhost:3000](http://localhost:3000) 에서 결과를 확인하세요.
 <br /><br />
