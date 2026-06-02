@@ -1,0 +1,291 @@
+## 프로젝트 개요
+
+온프레미스 가상화 환경(KVM, Hyper-V, VMware ESXi)과 퍼블릭 클라우드(AWS)를 결합한 **멀티사이트 하이브리드 클라우드 인프라**를 팀 프로젝트로 구축했습니다.
+
+서울 본사·영등포·인천·경기 4개 거점을 사이트-투-사이트 VPN으로 연결하고, AWS ap-northeast-2 리전에 6개 VPC를 구성해 VM 아카데미 서비스의 홈페이지·인강·DB·스토리지·테스트 환경을 분리 운영했습니다.
+
+**저는 AWS 인프라 구축 전체를 단독 담당**했습니다. 단순히 EC2를 띄우는 수준이 아니라, 다음 문제를 직접 설계하고 해결했습니다.
+
+- **Auto Scaling 인스턴스 초기화 문제** — 새 인스턴스에 기존 데이터가 없어 빈 서버가 트래픽을 받는 현상 → VPC 피어링 + User Data 기반 자동 복원 파이프라인으로 해결
+- **비용 최적화** — 트래픽이 적은 시간대에 인스턴스가 계속 실행되는 낭비 → Auto Scaling Scale In으로 자동 종료
+- **보안 경계 설계** — 외부에서 Private Subnet으로 직접 접근 불가 → Bastion Host + Security Group 체이닝으로 최소 권한 접근 제어 구현
+- **서비스 무중단** — 단일 AZ 장애에도 서비스 유지 → ALB + Multi-AZ Auto Scaling Group으로 가용성 확보
+
+---
+
+## 담당 역할 — AWS 인프라 구축
+
+### 전체 AWS 구성도
+
+![AWS VPC 구성도](/images/projects/AWS%20구축.png)
+
+ap-northeast-2(서울) 리전에 6개의 VPC를 구성하고 용도에 따라 역할을 분리했습니다.
+
+| VPC | CIDR | 역할 |
+|---|---|---|
+| VM-VPC01 | 10.0.0.0/16 | VM 아카데미 홈페이지 (웹 서비스) |
+| VM-VPC02 | 10.1.0.0/16 | Storage 서버 (백업 원본) |
+| VM-VPC03 | 10.2.0.0/16 | 테스트 환경 (Test01, Test02) |
+| VM-VPC04 | 10.3.0.0/16 | 관리용 인스턴스 (Management01) |
+| VM-VPC05 | 10.4.0.0/16 | VM 아카데미 인강 서비스 (웹 + Auto Scaling) |
+| VM-VPC06 | 10.5.0.0/16 | Amazon RDS (DB 전용, Private) |
+
+---
+
+### 🌐 VM 아카데미 웹사이트 — Docker Compose + ALB + Auto Scaling (VPC01, VPC05)
+
+VM 아카데미의 홈페이지(VPC01)와 인강 서비스(VPC05) 모두 동일한 방식으로 구성했습니다.
+
+#### Docker Compose 구성
+
+각 EC2 인스턴스에 **Docker Compose**로 3개 컨테이너를 묶어 배포했습니다.
+
+```
+WordPress  ←→  Nginx (리버스 프록시)  ←→  MariaDB
+```
+
+- **Nginx** — 80/443 포트 수신, WordPress 컨테이너로 요청 전달 및 정적 파일 캐싱
+- **WordPress** — PHP-FPM 기반 CMS, 강의 콘텐츠 및 회원 관리
+- **MariaDB** — WordPress 데이터 로컬 저장 (RDS 연동 전 단계)
+
+Docker Compose 파일 하나로 3개 서비스를 동시에 기동·종료·업데이트할 수 있어 배포 일관성을 확보했습니다.
+
+#### ALB (Application Load Balancer)
+
+- VPC01: **VM-ALB01**, VPC05: **VM-ALB02** 각각 배치
+- Public Subnet에 ALB를 두고 Private Subnet의 Auto Scaling 인스턴스로 트래픽 분산
+- Health Check로 비정상 인스턴스를 자동으로 대상 그룹에서 제외하여 다운 인스턴스에 요청이 가지 않도록 처리
+
+#### Auto Scaling — 가용성 + 비용 최적화
+
+트래픽 기반 자동 확장/축소로 과부하 방지와 비용 절감을 동시에 달성했습니다.
+
+- **Scale Out**: CPU 사용률 임계치 초과 시 EC2 인스턴스 자동 추가
+- **Scale In**: 트래픽 감소 시 불필요한 인스턴스 자동 종료 → 유휴 인스턴스 비용 제거
+- VPC01(AZ01·AZ02), VPC05(AZ02)에 각각 Auto Scaling Group 구성하여 AZ 장애에도 서비스 유지
+
+---
+
+### 💾 VPC 피어링 + User Data 기반 자동 백업·배포 파이프라인 (VPC01 → VPC02)
+
+Auto Scaling의 핵심 문제는 **새로 생성된 인스턴스가 아무 데이터도 없는 빈 서버**라는 점입니다. 트래픽이 몰려 인스턴스가 추가되는 순간, 그 서버에는 웹 파일도 DB 데이터도 없기 때문에 그냥 배포하면 사용자에게 빈 화면이 보입니다.
+
+이 문제를 해결하기 위해 **VPC01 운영 서버 → VPC02 Storage 서버 → 신규 Auto Scaling 인스턴스**로 이어지는 자동 배포 파이프라인을 설계했습니다.
+
+#### 전체 파이프라인 흐름
+
+```
+[VPC01 — 운영 인스턴스]
+  ├─ MariaDB 컨테이너 → mysqldump → DB 덤프 파일 생성
+  └─ 배포 파일 (docker-compose.yml, default.conf, index.html, style.css)
+          │
+          │  VPC 피어링 (VPC01 ↔ VPC02)
+          ▼
+[VPC02 — VM-Storage01 (PrivateSubnet03)]
+  └─ 최신 백업 파일 보관 (DB 덤프 + 배포 설정 파일 4종)
+          │
+          │  Auto Scaling Scale Out 이벤트 발생
+          │  → EC2 신규 인스턴스 기동
+          │  → User Data 스크립트 자동 실행
+          ▼
+[VPC01 — 신규 Auto Scaling 인스턴스]
+  ├─ Storage 서버에서 배포 파일 pull (scp / rsync)
+  ├─ DB 덤프 파일 복원 → MariaDB 초기 데이터 주입
+  ├─ docker-compose up -d 실행
+  └─ ALB 헬스체크 통과 → 트래픽 수신 시작
+```
+
+#### VPC01 → VPC02 백업 (운영 서버 측)
+
+VPC01의 운영 인스턴스는 주기적으로 다음 작업을 수행합니다.
+
+**1. MariaDB 컨테이너 DB 덤프**
+
+Docker Compose로 실행 중인 MariaDB 컨테이너 안으로 `mysqldump`를 실행해 SQL 덤프 파일을 호스트에 추출합니다.
+
+```bash
+docker exec mariadb_container \
+  mysqldump -u root -p"${DB_PASSWORD}" wordpress \
+  > /backup/db_backup.sql
+```
+
+**2. 배포 설정 파일 4종 준비**
+
+파일은 위치에 따라 두 그룹으로 나뉩니다.
+
+| 파일 | 로컬 경로 | 역할 |
+|---|---|---|
+| `index.php` | `/mnt/efs/wordpress/index.php` | EFS에 마운트된 WordPress 진입 파일 |
+| `style.css` | `/mnt/efs/wordpress/style.css` | EFS에 마운트된 WordPress 스타일시트 |
+| `docker-compose.yml` | `/app/docker-compose.yml` | WordPress + Nginx + MariaDB 컨테이너 정의 |
+| `default.conf` | `/app/nginx/default.conf` | Nginx 리버스 프록시 설정 |
+
+**3. VPC 피어링을 통해 VPC02 Storage 서버로 전송**
+
+VPC01(10.0.0.0/16)과 VPC02(10.1.0.0/16) 사이에 **VPC 피어링**을 설정하여, 인터넷을 거치지 않고 AWS 내부 네트워크로 직접 통신합니다.
+
+파일 종류에 따라 Storage01(`10.1.11.18`)의 두 디렉토리로 분리해 전송했습니다.
+
+```bash
+# WordPress 웹 파일 (EFS 경로) → /storage/config/
+rsync -avz \
+  -e "ssh -i /root/.ssh/storage_key -o StrictHostKeyChecking=no" \
+  /mnt/efs/wordpress/index.php \
+  /mnt/efs/wordpress/style.css \
+  ec2-user@10.1.11.18:/storage/config/
+
+# Docker 설정 파일 → /storage/scripts/
+rsync -avz \
+  -e "ssh -i /root/.ssh/storage_key -o StrictHostKeyChecking=no" \
+  /app/docker-compose.yml \
+  /app/nginx/default.conf \
+  ec2-user@10.1.11.18:/storage/scripts/
+```
+
+- `-avz`: 아카이브 모드(권한·타임스탬프 유지) + 압축 전송으로 변경된 파일만 효율적으로 동기화
+- SSH 키(`/root/.ssh/storage_key`)는 운영 인스턴스에만 보관, Storage01 접속 전용으로 사용
+- 피어링 라우팅 테이블에 `10.1.0.0/16 → pcx-xxxxxxxx` 경로를 추가해 VPC01 서브넷에서 VPC02 서브넷으로 패킷이 라우팅되도록 구성
+
+#### VPC02 Storage 서버 역할
+
+`VM-Storage01`은 항상 최신 배포 파일을 보관하는 **단일 진실 공급원(Single Source of Truth)** 역할을 합니다.
+
+| 경로 | 보관 파일 |
+|---|---|
+| `/storage/config/` | `index.php`, `style.css` (EFS WordPress 파일) |
+| `/storage/scripts/` | `docker-compose.yml`, `default.conf`, `setup.sh` |
+
+- 별도 인터넷 연결 없이 VPC02 Private Subnet 안에서만 동작 → 외부 노출 없음
+- `setup.sh`는 신규 인스턴스가 필요한 모든 작업을 수행하는 배포 스크립트로, Storage01에서 중앙 관리
+
+#### 신규 Auto Scaling 인스턴스 자동 배포 (User Data)
+
+Auto Scaling이 새 EC2 인스턴스를 기동할 때, **Launch Template에 등록된 User Data** 스크립트가 인스턴스 최초 부팅 시 자동으로 실행됩니다. 실행 순서는 다음과 같습니다.
+
+```bash
+#!/bin/bash
+
+# 1. 호스트명 설정
+hostnamectl set-hostname vm-web-$(hostname -s)
+
+# 2. Docker Compose 설치
+yum install -y docker
+systemctl enable --now docker
+curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" \
+  -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+# 3. EFS 마운트
+yum install -y amazon-efs-utils
+mkdir -p /mnt/efs
+mount -t efs fs-xxxxxxxx:/ /mnt/efs
+
+# 4. 앱 디렉토리 생성
+mkdir -p /app/nginx
+
+# 5. AWS Systems Manager(SSM)에서 Storage01 SSH 키 가져오기
+#    키를 코드에 하드코딩하지 않고 SSM Parameter Store에서 런타임에 주입
+mkdir -p /root/.ssh
+aws ssm get-parameter \
+  --name "/vm-academy/storage_key" \
+  --with-decryption \
+  --query "Parameter.Value" \
+  --output text > /root/.ssh/storage_key
+chmod 600 /root/.ssh/storage_key
+
+# 6. Storage01 서버에서 setup.sh 가져오기 (VPC 피어링 경로)
+STORAGE_IP="10.1.11.18"
+rsync -avz \
+  -e "ssh -i /root/.ssh/storage_key -o StrictHostKeyChecking=no" \
+  ec2-user@${STORAGE_IP}:/storage/scripts/setup.sh \
+  /app/setup.sh
+chmod +x /app/setup.sh
+
+# 7. setup.sh 실행 — 파일 배포·컨테이너 기동·DB 복원 전 과정 처리
+bash /app/setup.sh
+```
+
+**SSM Parameter Store를 사용한 이유**: SSH 개인 키를 Launch Template나 AMI에 직접 포함하면 키 교체 시 AMI를 새로 만들어야 하고 키 노출 위험도 있습니다. SSM에 암호화 저장 후 런타임에 가져오면 키를 안전하게 관리하고, 교체 시 SSM 값만 업데이트하면 됩니다.
+
+`setup.sh`는 Storage01의 `/storage/scripts/`에 저장된 배포 스크립트로, 실행 시 다음 작업을 순차 처리합니다.
+
+1. `/storage/config/`에서 `index.php`, `style.css` → `/mnt/efs/wordpress/`로 복사
+2. `/storage/scripts/`에서 `docker-compose.yml`, `default.conf` → `/app/`으로 복사
+3. `docker-compose up -d` 실행 → 3개 컨테이너 기동
+4. MariaDB 준비 대기 후 DB 덤프 복원
+
+User Data가 완료되면 컨테이너 3개(WordPress·Nginx·MariaDB)가 모두 기동된 상태로 ALB 헬스체크를 통과하고, 자동으로 대상 그룹에 등록되어 트래픽을 받기 시작합니다.
+
+**결과**: Scale Out이 발생해 새 인스턴스가 추가되는 순간부터 사용자는 정상 서비스를 경험합니다. SSH 키·배포 스크립트 모두 Storage01에서 중앙 관리되므로 업데이트 시 운영 인스턴스 변경 없이 Storage01 파일만 교체하면 됩니다.
+
+---
+
+### 🔐 Bastion Host — 안전한 내부 접근 (VPC01)
+
+Private Subnet의 EC2 인스턴스는 외부에서 직접 SSH 접속이 불가능합니다. **Bastion Host(VM-Bastion01)**를 Public Subnet에 배치하여 관리자가 안전하게 내부 인스턴스에 접근할 수 있도록 했습니다.
+
+- Bastion Host는 **서울 정보보안팀 IP(1.0.0.8/30)에서만 Port 22 접속 허용** — 외부 전체 차단
+- Bastion 통과 후 Private Subnet의 Web 서버(Port 22)에 접속 가능
+- 관리용 인스턴스(VM-Management01, VM-Management02)도 동일한 방식으로 VPC04→VPC05→VPC06 접근 체계를 구성
+
+---
+
+### 🛡️ Security Group — 계층적 접근 제어
+
+모든 트래픽은 Security Group을 통해 명시적으로 허용된 경우에만 통과됩니다.
+
+#### VPC01·VPC02·VPC03 (홈페이지 서비스)
+
+| 방향 | 출발지 | 목적지 | 포트 | 용도 |
+|---|---|---|---|---|
+| Inbound | 1.0.0.8/30 (서울 정보보안팀) | VM-BastionSG | 22 | Bastion 인스턴스 접속 |
+| Inbound | 0.0.0.0/0 | VM-ALBSG | 80 / 443 | 홈페이지 웹 서비스 접속 |
+| Inbound | VM-ALBSG | VM-WebSG | 80 | ALB를 통한 Web 서버 HTTP 전달 |
+| Inbound | VM-BastionSG | VM-WebSG | 22 | Bastion을 통한 Web 서버 관리 접속 |
+| Inbound | VM-WebSG | VM-EFSSG | 2049 | Web 서버의 EFS 마운트 |
+| Outbound | VM-BastionSG | 0.0.0.0/0 | All | Bastion 외부 통신 허용 |
+| Outbound | VM-ALBSG | 0.0.0.0/0 | All | ALB 외부 통신 허용 |
+| Outbound | VM-WebSG | 0.0.0.0/0 | All | Web 서버 외부 통신 허용 |
+| Outbound | VM-EFSSG | 0.0.0.0/0 | All | EFS 응답 및 외부 통신 허용 |
+
+#### VPC04·VPC05·VPC06 (인강 서비스 + RDS)
+
+| 방향 | 출발지 | 목적지 | 포트 | 용도 |
+|---|---|---|---|---|
+| Inbound | 1.0.0.8/30 (서울 정보보안팀) | SG-Manage01 | 22 | AWS 관리용 인스턴스 접속 |
+| Inbound | 0.0.0.0/0 | SG-ALB | 80 / 443 | 인강 웹 서비스 접속 |
+| Inbound | SG-ALB | SG-Web | 80 | ALB를 통한 Web 서버 HTTP 전달 |
+| Inbound | SG-Web | SG-DB | 3306 | AWS RDS 연동 |
+| Inbound | SG-Manage01 | SG-Manage02 | 22 | 관리용 인스턴스 간 접속 |
+| Inbound | SG-Manage02 | SG-DB | 3306 | AWS RDS 원격 관리 |
+| Outbound | SG-Manage01 | 0.0.0.0/0 | All | 관리용 인스턴스 외부 통신 허용 |
+| Outbound | SG-ALB | 0.0.0.0/0 | All | ALB 외부 통신 허용 |
+| Outbound | SG-Web | 0.0.0.0/0 | All | Web 서버 외부 통신 허용 |
+| Outbound | SG-DB | 0.0.0.0/0 | 3306 | AWS RDS 외부 통신 허용 |
+
+SG를 소스로 사용하는 **SG 체이닝** 방식으로 IP 대신 역할 기반 접근 제어를 구현했습니다. ALB → Web, Web → DB 순서로만 트래픽이 흐르며 각 계층을 건너뛴 직접 접근은 차단됩니다.
+
+---
+
+## 전체 인프라 구성 (팀 공동)
+
+| 거점 | 담당 기술 |
+|---|---|
+| 서울 본사 | AD/DNS 중앙 관리, KVM 가상화, VPN 허브 |
+| 영등포 | Hyper-V 환경, HAProxy 로드밸런서 |
+| 인천 | VMware ESXi, DHCP 서버 |
+| 경기 | Docker/Kubernetes 클러스터 |
+| AWS | VPC 6개, ALB, Auto Scaling, RDS, Bastion |
+
+---
+
+## 사용 도구 및 환경
+
+- **클라우드**: AWS (EC2, VPC, ALB, Auto Scaling, RDS, EFS, NAT Gateway, IGW)
+- **컨테이너**: Docker Compose (WordPress + Nginx + MariaDB)
+- **DB**: Amazon RDS, MariaDB
+- **보안**: Security Group (SG 체이닝), Bastion Host, EIP
+- **OS**: Amazon Linux 2
+- **온프레미스**: KVM, Hyper-V, VMware ESXi, Rocky Linux
+- **네트워크**: IPsec VPN, HAProxy, AD/DNS/DHCP
+

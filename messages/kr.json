@@ -18,7 +18,10 @@
           "pentest": "시스템 엔지니어링",
           "linux": "Linux (Kali/Ubuntu/Rocky)",
           "network": "네트워크 보안",
-          "growth": "성장마인드"
+          "growth": "성장마인드",
+          "react": "React",
+          "csharp": "C#",
+          "flutter": "Flutter (Dart)"
         }
       },
       "skills": {

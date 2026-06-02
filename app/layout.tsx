@@ -51,10 +51,10 @@ const RootLayout = async ({
         <link rel="icon" href="/favicon.ico" />
       </head>
       <Script
-        defer
         src="https://cloud.umami.is/script.js"
         data-website-id="8e2c9f27-a12b-48ca-8130-808ebe377aca"
-      ></Script>
+        strategy="lazyOnload"
+      />
       <body className={interSans.className}>
         <NextTopLoader
           color="#05b6d3"

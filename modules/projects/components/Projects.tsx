@@ -47,13 +47,13 @@ const Projects = () => {
   }
 
   return (
-    <section className="grid grid-cols-1 gap-6 md:grid-cols-2 md:auto-rows-fr">
+    <section className="grid grid-cols-1 gap-5 md:grid-cols-2">
       {filteredProjects?.map((project, index) => (
         <motion.div
           key={index}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.3, delay: index * 0.1 }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: index * 0.07 }}
           className="h-full"
         >
           <ProjectCard {...project} />

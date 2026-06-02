@@ -1,0 +1,171 @@
+## 프로젝트 개요
+
+서울 본사·대전 지사·부산 지사 3개 거점과 DMZ 구간을 Frame Relay WAN으로 연결하고, OSPF 멀티 Area 설계, EIGRP 재분배, HSRP 이중화, VPN, DMZ 기반 서비스 분리까지 갖춘 **엔터프라이즈급 재해복구 인프라**를 팀 프로젝트로 설계·구축했습니다.
+
+**저는 대전 지사와 부산 지사의 서버 구축 전체를 담당**했습니다.
+
+인프라는 크게 5개 영역으로 구성됩니다.
+
+| 영역 | 구성 | 주요 기술 |
+|---|---|---|
+| 서울 본사 | OSPF Area 1, RIPv2 내부 재분배 | HSRP, PAT, VPN, SSH, ACL |
+| DMZ | 인터넷 공개 서비스 구간 | Mail, Samba(전사파일), HAProxy, Web/DB |
+| OSPF Backbone | Area 0, Frame Relay WAN | Multi Point / Point to Point, ABR 3개 |
+| 대전 지사 | OSPF Area 4 | PAT, VPN, SSH, ABR(Area 3/4) Virtual Link |
+| 부산 지사 | OSPF Area 2 + EIGRP | HSRP, PAT, VPN, ACL, Ether Channel |
+
+**서울 본사**는 OSPF Area 1로 운영되며, 내부 일부 구간은 RIPv2로 구성되어 있어 OSPF와의 재분배 설정이 필요했습니다. 서버실 1(시험망)과 서버실 2(공용망)를 분리하여 시험 환경과 운영 환경의 트래픽이 섞이지 않도록 격리했습니다. 서버실 2에는 WEBDB1M, WEBDB2, WEBDB3이 배치되어 웹 서비스를 제공합니다.
+
+**DMZ**는 인터넷과 내부망 사이에 위치한 완충 구간으로, Mail 서버·Samba(전사 파일 보관용)·HAProxy 로드밸런서·Web1·Web2·WebDB 서버를 배치했습니다. HAProxy가 Web1/Web2로 트래픽을 분산하고, WebDB는 Slave 구성으로 읽기 부하를 처리합니다. DMZ는 내부망과 완전히 분리된 별도 네트워크 세그먼트로 구성하여 DMZ 서버가 침해되더라도 내부망으로 직접 접근할 수 없도록 했습니다.
+
+**WAN 구간(OSPF Area 0)**은 Frame Relay Multi Point와 Point to Point를 혼용해 구성했습니다. 3개의 ABR(Area 0/1, Area 0/2, Area 0/3)이 각 거점 Area와 Backbone을 연결하며, Internet World와의 연결도 Area 0에서 처리합니다. SSH 접근 시 포트 5506과 ACL을 적용하여 관리 트래픽을 제어했습니다.
+
+---
+
+## 담당 역할 — 서버 구축
+
+### 🖥️ 대전 지사 서버실 (Windows Server)
+
+대전 지사 서버실은 **Windows Server** 환경으로 구성했습니다.
+
+![대전 지사 네트워크 구성도](/images/projects/ha-infra-daejeon.png)
+
+#### 네트워크 구성
+
+| VLAN | 서브넷 | 부서 |
+|---|---|---|
+| VLAN 10 | 192.168.200.0/25 | 서버실 (Windows Server) |
+| VLAN 20 | 192.168.200.128/25 | 통합관제팀 |
+| VLAN 30 | 192.168.210.0/25 | 보안연구팀 |
+| VLAN 40 | 192.168.210.128/25 | 지사행정팀 |
+| VLAN 50 | 192.168.220.0/25 | 유출조사팀 |
+
+L2 스위치는 VTP Server/Client 구조로 구성해 VLAN 정보를 중앙에서 배포하여 각 스위치에 수동 설정 없이 자동으로 동기화되도록 했습니다.
+
+#### 서버 구성 상세
+
+**ATC 관제 서버**는 각 부서 VLAN에서 발생하는 트래픽과 네트워크 이벤트를 실시간으로 수집·모니터링하며, 수집된 데이터를 관제 DB에 기록해 이상 징후 분석과 사후 추적에 활용합니다.
+
+**DJ_DHCP 서버**는 VLAN별 scope를 분리하여 각 부서 클라이언트에 올바른 서브넷 주소를 자동 할당합니다. 서버, 프린터 등 고정 IP가 필요한 장비는 MAC 주소 기반 Reservation으로 등록해 IP 충돌을 방지했습니다.
+
+**관제 DB**는 ATC 서버의 로그·이벤트 데이터를 저장하며, localhost 및 ATC 서버 IP에서만 접근 가능하도록 바인딩을 제한했습니다.
+
+#### OSPF Area 4 — Virtual Link
+
+대전 지사는 OSPF Area 4에 속하는데, Area 0(Backbone)과 직접 인접하지 않는 **비연속 Area** 구조였습니다. OSPF 규약상 모든 Area는 Backbone과 직접 연결되어야 하므로, **ABR에 Virtual Link**를 설정해 Area 3을 전송 Area로 활용하여 논리적으로 Backbone과 연결했습니다. 이 설정 없이는 Area 4의 경로가 전체 라우팅 테이블에 광고되지 않아 지사 간 통신이 불가능했습니다.
+
+---
+
+### 🐧 부산 지사 서버실 (Rocky Linux)
+
+부산 지사 서버실은 **Rocky Linux 9** 환경으로 구축했습니다. 고가용성과 데이터 보안에 중점을 두어 DB 이중화, 파일 공유 자동화, 접근 제어를 직접 설계·구현했습니다.
+
+![부산 지사 네트워크 구성도](/images/projects/ha-infra-busan.png)
+
+#### 네트워크 구성
+
+| VLAN | 서브넷 | 부서 |
+|---|---|---|
+| VLAN 10 | 192.168.100.0/25 | 서버실 (Rocky Linux) |
+| VLAN 20 | 192.168.100.128/25 | 백업관리팀 |
+| VLAN 30 | 192.168.110.0/25 | 복구실행팀 |
+| VLAN 40 | 192.168.110.128/25 | 지사유지보수팀 |
+
+서버실(GW3, Samba, GW3 DB)과 L2 스위치 사이에 **Ether Channel**을 구성해 물리 링크를 논리적으로 묶었습니다. 단일 링크 대비 대역폭이 두 배로 늘어나고, 링크 하나가 끊겨도 나머지 링크로 즉시 전환됩니다.
+
+---
+
+#### 🗄️ DB 이중화 — RAID + Master-Slave 복제
+
+재해복구 인프라의 핵심은 데이터 보호입니다. 디스크 레벨과 DB 레벨, 두 계층에서 독립적으로 이중화를 구현했습니다.
+
+**1단계 — RAID 1+0 (디스크 이중화)**
+
+RAID 1+0(RAID 10)을 구성했습니다. RAID 1(미러링)로 쌍을 이룬 디스크 세트를 RAID 0(스트라이핑)으로 묶는 구조로, 단순 RAID 1 대비 읽기 성능이 향상되면서도 각 미러 쌍 중 한 디스크가 고장나도 데이터가 보존됩니다. DB 서버처럼 읽기·쓰기가 빈번한 환경에서 성능과 가용성을 동시에 확보하기 위해 선택했습니다. 디스크 교체 후 자동 리빌드로 정상 상태로 복구됩니다.
+
+**2단계 — MariaDB Master-Slave 복제 (DB 이중화)**
+
+RAID로 디스크를 보호하더라도 DB 프로세스 자체가 비정상 종료되면 서비스가 중단됩니다. 이를 대비해 **MariaDB Master-Slave 복제**를 구성했습니다.
+
+| 구분 | 역할 | 상세 |
+|---|---|---|
+| Master DB (GW3 DB) | 쓰기 전담 | INSERT·UPDATE·DELETE 처리, Binary Log(binlog)를 Slave에 실시간 전송 |
+| Slave DB | 읽기 + 복제 대기 | Relay Log를 통해 Master 상태를 동기화, 장애 시 Master로 수동 승격 |
+
+복제 상태는 `SHOW SLAVE STATUS\G` 명령으로 모니터링하며, `Slave_IO_Running`·`Slave_SQL_Running`이 모두 `Yes`인지, `Seconds_Behind_Master`가 0에 수렴하는지 주기적으로 점검했습니다. Master 장애 시 Slave에서 `STOP SLAVE` → `RESET SLAVE ALL` → 서비스 연결 전환 순서로 승격 절차를 수립했습니다.
+
+---
+
+#### 📂 Samba 서버 — 크로스 플랫폼 파일 공유 및 DB 연동 자동화
+
+부산 지사 서버실은 Rocky Linux 서버와 Windows 클라이언트가 공존하는 혼합 환경입니다. **Samba(SMB/CIFS)**를 구성해 OS 종류에 관계없이 동일한 공유 디렉터리에 접근할 수 있도록 했습니다.
+
+파일 공유에 그치지 않고 **DB 백업 자동화**와 연계했습니다.
+
+- **자동 백업**: cron job으로 `mariadb-dump`를 주기 실행하여 덤프 파일을 Samba 공유 디렉터리(`/srv/samba/backup`)에 타임스탬프 파일명으로 자동 적재
+- **크로스 플랫폼 접근**: 백업 파일이 공유 디렉터리에 올라오는 즉시 Windows 관리자 PC에서 네트워크 드라이브로 접근해 복구 작업에 활용 가능
+- **자동 마운트**: `/etc/fstab`에 `cifs` 타입으로 마운트 항목을 등록하여 서버 재시작 시에도 공유 디렉터리가 자동으로 연결
+
+---
+
+#### 🔐 권한 관리 — 계층적 접근 제어
+
+**SSH 접근 제어**
+
+- `sshd_config`에서 `PasswordAuthentication no` 설정으로 패스워드 로그인을 완전히 비활성화하고 **공개키 인증**만 허용
+- `PermitRootLogin no`로 root 직접 로그인 차단, 관리 작업은 일반 계정 로그인 후 `sudo`로만 수행
+- `AllowUsers`로 접속 가능한 계정을 명시적으로 지정, 미등록 계정은 인증 단계 이전에 차단
+
+**Samba 공유 권한**
+
+- `smb.conf`에서 공유 섹션별로 `valid users`를 지정해 인가된 계정만 접근 가능
+- 팀별 공유 디렉터리에 `read only = yes` / `writable = yes`를 구분 적용
+- `map to guest = never`로 익명 접근을 원천 차단
+- Linux 파일 시스템 권한(chmod 770, chown)과 Samba 레벨 권한을 이중 적용하여 Samba 우회 접근 시에도 보호
+
+**DB 계정 권한 분리**
+
+- 애플리케이션 서비스 계정: `GRANT SELECT ON db.* TO 'app_user'@'내부IP'` — 읽기 전용
+- DBA 계정: 스키마 변경·계정 관리 전용, 서버 콘솔 또는 내부 관리망에서만 접근 허용
+- `GRANT` 시 `'user'@'%'` 대신 `'user'@'192.168.100.x'` 형태로 접근 허용 IP를 명시
+- `bind-address`를 localhost 및 내부 서버 IP로 제한하여 외부에서 MariaDB 포트(3306) 직접 접근 차단
+
+---
+
+## 전체 인프라 구성 (팀 공동)
+
+### 🌐 라우팅 — OSPF + EIGRP 재분배
+
+| 거점 | 프로토콜 | 비고 |
+|---|---|---|
+| 본사 | OSPF Area 0 | Backbone Area |
+| 대전 지사 | OSPF Area 3/4 | ABR Virtual Link로 Backbone 연결 |
+| 부산 지사 | OSPF Area 2 + EIGRP 11 | EIGRP 재분배, VPN 터널 연동 |
+
+OSPF와 EIGRP 경계에서 **재분배(Redistribution)**를 설정해 두 프로토콜이 서로의 경로 정보를 교환할 수 있도록 했습니다. 메트릭 값을 적절히 조정하여 의도치 않은 경로 루프나 서브최적 경로가 선택되지 않도록 했습니다.
+
+### 🔄 HSRP 게이트웨이 이중화
+
+부산 지사 L3 스위치에 **HSRP(Hot Standby Router Protocol)**을 구성했습니다. Active 장비가 다운되면 Standby가 Virtual IP·MAC을 인계받아 클라이언트 설정 변경 없이 수 초 내에 통신을 복구합니다. Hello 패킷 간격과 Hold 타임을 조정해 전환 속도를 최적화했습니다.
+
+### 🔒 네트워크 보안
+
+- **ACL** — 거점 간 트래픽을 허용 목록으로 명시 관리, 정의되지 않은 트래픽은 묵시적 차단
+- **PAT** — 내부 사설 IP를 공인 IP로 변환하여 외부 통신 처리, 내부 구조 노출 최소화
+- **EIGRP VPN 터널** — 지사 간 트래픽 암호화, 라우팅 정보 외부 노출 차단
+
+---
+
+## 사용 도구 및 환경
+
+- **OS**: Rocky Linux 9 (부산 서버), Windows Server (대전 서버)
+- **가상화**: VirtualBox
+- **DB**: MariaDB (RAID 1+0 + Master-Slave Replication)
+- **파일 공유**: Samba (SMB/CIFS)
+- **라우팅 프로토콜**: OSPF (Area 0/2/3/4), EIGRP 11
+- **게이트웨이 이중화**: HSRP
+- **링크 이중화**: Ether Channel
+- **VLAN 관리**: VTP Server/Client
+- **보안**: SSH 공개키 인증, ACL, PAT, VPN, MariaDB IP 바인딩 제한
+
+

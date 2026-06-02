@@ -19,7 +19,10 @@
           "pentest": "Systems Engineering",
           "linux": "Linux (Kali/Ubuntu/Rocky)",
           "network": "Network Security",
-          "growth": "Growth Mindset"
+          "growth": "Growth Mindset",
+          "react": "React",
+          "csharp": "C#",
+          "flutter": "Flutter (Dart)"
         }
       },
       "skills": {

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { BsGithub as GithubIcon } from "react-icons/bs";
 import { FiExternalLink as LinkIcon } from "react-icons/fi";
+import { FaFilePowerpoint } from "react-icons/fa";
 
 interface ProjectLinkProps {
   title?: string;
@@ -45,6 +46,7 @@ const ProjectLink = ({ title, link_github, link_demo }: ProjectLinkProps) => {
 
   const hasValidGithub = isValidUrl(link_github);
   const hasValidDemo = isValidUrl(link_demo);
+  const isPptLink = hasValidDemo && link_demo!.includes("docs.google.com/presentation");
 
   return (
     <div className="flex gap-4">
@@ -61,8 +63,8 @@ const ProjectLink = ({ title, link_github, link_demo }: ProjectLinkProps) => {
       {hasValidDemo ? (
         <LinkComponent
           url={link_demo!}
-          text={t("live_demo_text")}
-          icon={<LinkIcon size={22} />}
+          text={isPptLink ? "프레젠테이션" : t("live_demo_text")}
+          icon={isPptLink ? <FaFilePowerpoint size={20} /> : <LinkIcon size={22} />}
         />
       ) : null}
     </div>
