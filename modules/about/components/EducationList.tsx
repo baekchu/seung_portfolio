@@ -17,9 +17,9 @@ const EducationList = () => {
         <SectionHeading title={t("title")} icon={<EducationIcon />} />
         <SectionSubHeading>
           <p>{t("sub_title")}</p>
-          <div className="mt-2 flex flex-col gap-4 md:mt-0 md:flex-row">
+          {/* <div className="mt-2 flex flex-col gap-4 md:mt-0 md:flex-row">
             <Portfolio />
-          </div>
+          </div> */}
         </SectionSubHeading>
       </div>
 
