@@ -3,7 +3,7 @@
     "intro": "Hello, I'm Seung.Hak Baek",
     "location": "Based in Namyangju, South Korea 🇰🇷",
     "location_type": "Onsite",
-    "resume": "I am a passionate security engineer with a strong focus on network infrastructure design and vulnerability analysis. I specialize in network security and server infrastructure, with hands-on experience in tools like Wireshark, Metasploit, and Nmap. Skilled in operating Kali Linux, Ubuntu, and Rocky Linux environments for server deployment and security tasks. I am committed to responsible security practices, continuously growing my knowledge to protect systems and contribute to a safer digital environment.",
+    "resume": "I'm an aspiring security engineer who genuinely enjoys designing network infrastructure and running servers hands-on. I've built multi-site infrastructure spanning on-prem virtualization (KVM, VMware), Docker, Kubernetes, and AWS, and automated operations with User-Data-based backup and deployment pipelines and Auto Scaling. What I enjoy most is hunting for vulnerabilities on Kali Linux with Wireshark, Nmap, and Metasploit, and I'm comfortable standing up and hardening servers on Ubuntu and Rocky Linux while managing MariaDB and MySQL. I hold to responsible security principles and keep growing, hoping to help build a safer digital world.",
     "skills": {
       "title": "Tech Stack",
       "sub_title": "My main technical competencies."
@@ -12,8 +12,8 @@
       "title": "I want to work in Security",
       "sub_title": "Aspiring systems engineer passionate about infrastructure and security",
       "main_card": {
-        "title": "Dedicated to Web Security",
-        "description": "I want to grow as a security engineer through hands-on infrastructure and security projects, and help organizations stay secure.",
+        "title": "I want to grow in security",
+        "description": "I've taken on real infrastructure and security projects firsthand, and also built React web, C# desktop, and Flutter mobile apps. On that foundation I want to grow into a security expert and help strengthen organizations' security.",
         "button_text": "Contact for hire",
         "tags": {
           "pentest": "Systems Engineering",
@@ -32,7 +32,7 @@
         },
         "network": {
           "title": "Network & System Security",
-          "description": "Network traffic analysis with Wireshark, Linux server administration (Kali, Ubuntu, Rocky Linux)"
+          "description": "Traffic analysis and penetration testing with Wireshark and Nmap on Kali Linux; server setup and administration on Ubuntu and Rocky Linux"
         }
       },
       "stats": {
@@ -100,7 +100,7 @@
     "resume": {
       "paragraf_1": "Hello! Thank you for visiting my portfolio. My name is Baek Seunghak. I studied Computer Engineering at Hallym University, building a solid foundation in computer science and systems. I have a deep passion for web security and penetration testing, and I am actively working toward a career in the cybersecurity field.",
 
-      "paragraf_2": "My focus is on network security, including vulnerability assessment, infrastructure hardening, and security analysis. I am proficient with Kali Linux, Ubuntu, and Rocky Linux, and I utilize tools such as Wireshark, Nmap, and Metasploit for network analysis and security testing. I also have experience in database management and server administration with MariaDB and MySQL.",
+      "paragraf_2": "My focus is on network security, vulnerability analysis, and building server infrastructure. I've worked across on-prem virtualization (KVM, VMware), Docker, Kubernetes, and AWS to build multi-site infrastructure, and automated operations with User-Data-based backup/deployment and Auto Scaling. I run network analysis and security testing with Wireshark, Nmap, and Metasploit on Kali Linux, and have hands-on experience building servers on Ubuntu and Rocky Linux and managing MariaDB and MySQL.",
 
       "paragraf_3": "I believe that staying curious and continuously learning are essential in the ever-evolving security landscape. I am dedicated to responsible security practices. I look forward to contributing to a security-focused team, strengthening infrastructure security, and growing as a professional in the information security industry!"
     },
