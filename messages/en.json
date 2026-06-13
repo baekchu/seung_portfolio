@@ -77,6 +77,21 @@
       "title": "Database Backup Program",
       "description": "A desktop application responsible for automatic backup and restoration of enterprise databases. Developed with C# and .NET Framework, includes scheduling, compression, and encryption features. Supports various databases (MySQL, SQL Server, PostgreSQL).",
       "content": "A professional tool for secure backup and restoration of enterprise data."
+    },
+    "10": {
+      "title": "AR Combined with Blockchain Technology",
+      "description": "A research proposal for a decentralized platform that combines AR (Augmented Reality) with blockchain technology to strengthen trust and security. Presents an augmented-reality blockchain for AR commercialization, DID-based decentralized identity authentication, and a hybrid token model, deriving differentiators through analysis of a similar case (Scanetchain) and a failure case (Steemit).",
+      "content": "A research proposal for a decentralized platform combining AR and blockchain, with analysis of similar and failed cases."
+    },
+    "11": {
+      "title": "IoT Security Vulnerabilities & Countermeasures",
+      "description": "A research report analyzing the security vulnerabilities of rapidly expanding IoT environments in the hyper-connected society. Covers the OWASP IoT Top 10 vulnerabilities, device hacking scenarios exploiting the CoAP protocol, and attack techniques targeting firmware, routers, and CCTV, then proposes step-by-step countermeasures including big-data (Hadoop) based blacklist screening.",
+      "content": "A research report organizing the security threats, attack scenarios, and countermeasures of hyper-connected IoT environments."
+    },
+    "12": {
+      "title": "How a Stack Overflow Occurs",
+      "description": "A research note analyzing how a stack buffer overflow occurs at the assembly level. Explains the difference between MOV and LEA instructions, the set conditions of carry and overflow flags, the function prologue/epilogue (ebp, esp, SFP, RET) and stack frame structure, and disassembled assembly code analysis to describe the mechanism of a stack overflow.",
+      "content": "A reverse-engineering study analyzing how a stack buffer overflow occurs at the assembly level."
     }
   },
   "AboutPage": {
