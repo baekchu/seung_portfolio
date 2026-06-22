@@ -10,10 +10,10 @@
     },
     "services": {
       "title": "I want to work in Security",
-      "sub_title": "Aspiring systems engineer passionate about infrastructure and security",
+      "sub_title": "An aspiring security engineer who enjoys infrastructure and systems work",
       "main_card": {
         "title": "I want to grow in security",
-        "description": "I've taken on real infrastructure and security projects firsthand, and also built React web, C# desktop, and Flutter mobile apps. On that foundation I want to grow into a security expert and help strengthen organizations' security.",
+        "description": "I've built infrastructure and run security projects hands-on, and along the way I've also shipped React web, C# desktop, and Flutter mobile apps. I want to build on all of that to grow into a security expert and help make organizations harder to break into.",
         "button_text": "Contact for hire",
         "tags": {
           "pentest": "Systems Engineering",
@@ -98,11 +98,11 @@
     "title": "About",
     "description": "A brief story about me",
     "resume": {
-      "paragraf_1": "Hello! Thank you for visiting my portfolio. My name is Baek Seunghak. I studied Computer Engineering at Hallym University, building a solid foundation in computer science and systems. I have a deep passion for web security and penetration testing, and I am actively working toward a career in the cybersecurity field.",
+      "paragraf_1": "Hi, I'm Seunghak Baek — thanks for stopping by my portfolio. I studied Computer Engineering at Hallym University, where I built up the fundamentals of computer science and systems step by step. Web security and penetration testing were the parts I enjoyed most, and that's what naturally led me toward a career in security.",
 
-      "paragraf_2": "My focus is on network security, vulnerability analysis, and building server infrastructure. I've worked across on-prem virtualization (KVM, VMware), Docker, Kubernetes, and AWS to build multi-site infrastructure, and automated operations with User-Data-based backup/deployment and Auto Scaling. I run network analysis and security testing with Wireshark, Nmap, and Metasploit on Kali Linux, and have hands-on experience building servers on Ubuntu and Rocky Linux and managing MariaDB and MySQL.",
+      "paragraf_2": "These days I spend most of my time on network security, vulnerability analysis, and server infrastructure. I've built multi-site infrastructure hands-on — from on-prem virtualization (KVM, VMware) to Docker, Kubernetes, and AWS — and automated the operations side with User-Data-based backup/deploy and Auto Scaling. I do my security testing on Kali Linux with Wireshark, Nmap, and Metasploit, and I set up and run servers on Ubuntu and Rocky Linux, MariaDB and MySQL included.",
 
-      "paragraf_3": "I believe that staying curious and continuously learning are essential in the ever-evolving security landscape. I am dedicated to responsible security practices. I look forward to contributing to a security-focused team, strengthening infrastructure security, and growing as a professional in the information security industry!"
+      "paragraf_3": "Security moves fast, so I think the real key is staying curious and never stopping learning. My goal is to keep applying what I learn to real infrastructure and grow into an engineer who can genuinely pull their weight on a security team."
     },
    
     "education": {

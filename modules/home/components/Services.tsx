@@ -35,7 +35,7 @@ const Services = () => {
   ];
 
   const stats = [
-    { icon: <FaSearch size={18} />, value: "7+", label: t("stats.projects"), color: "text-rose-500 dark:text-rose-400" },
+    { icon: <FaSearch size={18} />, value: "10+", label: t("stats.projects"), color: "text-rose-500 dark:text-rose-400" },
     { icon: <FaShieldAlt size={18} />, value: "100%", label: t("stats.teamwork"), color: "text-teal-500 dark:text-teal-400" },
     { icon: <IdeaIcon size={18} />, value: "24/7", label: t("stats.learning"), color: "text-amber-500 dark:text-amber-400" },
   ];

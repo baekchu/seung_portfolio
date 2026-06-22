@@ -23,7 +23,7 @@ const ProfileHeader = ({ expandMenu, imageSize }: ProfileHeaderProps) => {
     >
       {/* Bermasalah (bug) */}
   <Image
-        src={"/images/satria.jpg"}
+        src={"/images/profile.jpg"}
         width={expandMenu ? 80 : imageSize}
         height={expandMenu ? 80 : imageSize}
         alt="S.H Baek"
