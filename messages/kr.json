@@ -69,6 +69,11 @@
   "portfolio_download_button": "포트폴리오 다운로드"
 },
   "ProjectsData": {
+    "0": {
+      "title": "지니제과 보안 서비스 구축 및 인프라 취약점 진단",
+      "description": "지니제과 인천 지사 물류 서비스를 Kubernetes·MariaDB·nginx로 구축하고, Kali Linux로 직접 모의해킹을 수행한 뒤 발견한 취약점까지 조치한 프로젝트입니다. SQL Injection으로 전체 송장 데이터를 탈취하고 OS Command Injection으로 root 권한 리버스 쉘까지 획득하는 과정을 재현한 다음, 코드와 설정 수준에서 대응했습니다.",
+      "content": "Kubernetes·MariaDB·nginx로 구축한 서비스를 Kali Linux로 모의해킹하고 취약점을 조치한 팀 프로젝트입니다."
+    },
     "1": {
       "title": "가상화 기반 VM 아카데미 인프라 및 보안 구축",
       "description": "KVM, Hyper-V, VMware(ESXi), Docker, Kubernetes, AWS를 활용하여 서울 본사·영등포·인천·경기 4개 거점을 VPN으로 연결한 멀티사이트 하이브리드 클라우드 인프라를 설계·구축했습니다. 온프레미스 가상화 환경과 AWS 멀티 VPC를 통합 운영하며 각 지사별 AD/DNS/DHCP, HAProxy 로드밸런싱, Auto Scaling을 구성했습니다.",

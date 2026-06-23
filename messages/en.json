@@ -43,6 +43,11 @@
     }
   },
   "ProjectsData": {
+    "0": {
+      "title": "Genie Confectionery Security Build & Infrastructure Vulnerability Assessment",
+      "description": "Built Genie Confectionery's Incheon branch logistics service with Kubernetes, MariaDB, and nginx, then ran hands-on penetration testing with Kali Linux and remediated the vulnerabilities found. Reproduced the full chain from SQL Injection (dumping all invoice data) to OS Command Injection (gaining a root reverse shell), then fixed the issues at the code and configuration level.",
+      "content": "A team project that built a Kubernetes, MariaDB, and nginx based service, pentested it with Kali Linux, and remediated the findings."
+    },
     "1": {
       "title": "Virtualization-Based VM Academy Infrastructure & Security",
       "description": "Designed and deployed a multi-site hybrid cloud infrastructure connecting four locations (Seoul HQ, Yeongdeungpo, Incheon, Gyeonggi) via VPN using KVM, Hyper-V, VMware (ESXi), Docker, Kubernetes, and AWS. Integrated on-premises virtualization with AWS multi-VPC architecture, configuring AD/DNS/DHCP, HAProxy load balancing, and Auto Scaling per site.",

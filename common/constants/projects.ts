@@ -2,6 +2,19 @@ import { ProjectItem } from "@/common/types/projects";
 
 export const PROJECTS: ProjectItem[] = [
   {
+    id: 0,
+    title: "지니제과 보안 서비스 구축 및 인프라 취약점 진단",
+    slug: "genie-security-infra",
+    description: "지니제과 인천 지사 물류 서비스를 Kubernetes·MariaDB·nginx로 구축하고, Kali Linux로 직접 모의해킹을 수행한 뒤 발견한 취약점까지 조치한 프로젝트입니다. SQL Injection으로 전체 송장 데이터를 탈취하고 OS Command Injection으로 root 권한 리버스 쉘까지 획득하는 과정을 재현한 다음, 코드와 설정 수준에서 대응했습니다.",
+    image: "/images/projects/genie-architecture.png",
+    link_demo: "https://docs.google.com/presentation/d/1EMMq2dSZ-k6Ao2I_bzKqCVIy73NIxraK/edit?usp=sharing&ouid=116104757229028852554&rtpof=true&sd=true",
+    link_github: undefined,
+    stacks: ["Kali Linux", "Kubernetes", "MariaDB", "Vulnerability Analysis", "SQL Injection", "Web Hacking", "Network Operations"],
+    content: "Kubernetes·MariaDB·nginx로 구축한 서비스를 Kali Linux로 모의해킹하고 취약점을 조치한 팀 프로젝트입니다.",
+    is_show: true,
+    is_featured: true,
+  },
+  {
     id: 1,
     title: "가상화 기반 VM 아카데미 인프라 및 보안 구축",
     slug: "multisite-hybrid-cloud-infrastructure",
