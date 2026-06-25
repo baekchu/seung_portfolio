@@ -25,7 +25,6 @@ import {
   SiDocker,
   SiFlutter,
   SiDart,
-  SiCsharp,
   SiPhp,
   SiMysql,
   SiKalilinux,
@@ -39,7 +38,6 @@ import {
   SiAmazonaws,
 } from "react-icons/si";
 import { RiBearSmileFill } from "react-icons/ri";
-import { DiMsqlServer } from "react-icons/di";
 import {
   FaNetworkWired,
   FaShieldAlt,
@@ -84,11 +82,6 @@ export const STACKS: SkillProps = {
   Flutter: <SiFlutter size={iconSize} className="text-blue-400" />,
   Dart: <SiDart size={iconSize} className="text-blue-600" />,
   Provider: <SiFlutter size={iconSize} className="text-indigo-500" />,
-  "C#": <SiCsharp size={iconSize} className="text-purple-600" />,
-  WPF: <SiCsharp size={iconSize} className="text-blue-700" />,
-  ".NET Framework": <SiCsharp size={iconSize} className="text-violet-600" />,
-  SQL: <DiMsqlServer size={iconSize} className="text-blue-800" />,
-  "Entity Framework": <SiCsharp size={iconSize} className="text-orange-700" />,
   PHP: <SiPhp size={iconSize} className="text-indigo-600" />,
   MySQL: <SiMysql size={iconSize} className="text-orange-600" />,
   MongoDb: <SiMongodb size={iconSize} className="text-green-600" />,
