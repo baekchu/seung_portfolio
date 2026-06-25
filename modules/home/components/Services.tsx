@@ -61,7 +61,7 @@ const Services = () => {
               {t("main_card.description")}
             </p>
             <div className="flex flex-wrap gap-2">
-              {["main_card.tags.pentest", "main_card.tags.linux", "main_card.tags.network", "main_card.tags.growth", "main_card.tags.react", "main_card.tags.csharp", "main_card.tags.flutter"].map((key) => (
+              {["main_card.tags.pentest", "main_card.tags.linux", "main_card.tags.network", "main_card.tags.growth", "main_card.tags.react", "main_card.tags.flutter"].map((key) => (
                 <span key={key} className="px-2.5 py-1 text-xs font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 rounded-full">
                   {t(key)}
                 </span>

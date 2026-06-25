@@ -141,7 +141,7 @@ export const PROJECTS: ProjectItem[] = [
     link_github: "https://github.com/baekchu/databackup",
     stacks: ["C#", ".NET Framework", "WPF", "Entity Framework", "SQL"],
     content: "기업 데이터의 안전한 백업과 복원을 위한 전문 도구입니다.",
-    is_show: true,
+    is_show: false,
     is_featured: false,
   },
 ];

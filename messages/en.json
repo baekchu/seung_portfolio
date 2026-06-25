@@ -13,7 +13,7 @@
       "sub_title": "An aspiring security engineer who enjoys infrastructure and systems work",
       "main_card": {
         "title": "I want to grow in security",
-        "description": "I've built infrastructure and run security projects hands-on, and along the way I've also shipped React web, C# desktop, and Flutter mobile apps. I want to build on all of that to grow into a security expert and help make organizations harder to break into.",
+        "description": "I've built infrastructure and run security projects hands-on, and along the way I've also shipped React web and Flutter mobile apps. I want to build on all of that to grow into a security expert and help make organizations harder to break into.",
         "button_text": "Contact for hire",
         "tags": {
           "pentest": "Systems Engineering",
@@ -21,7 +21,6 @@
           "network": "Network Security",
           "growth": "Growth Mindset",
           "react": "React",
-          "csharp": "C#",
           "flutter": "Flutter (Dart)"
         }
       },
